@@ -1,3 +1,6 @@
+[![nuget](https://img.shields.io/badge/Nuget-WindowsForm.Console-brightgreen.svg?maxAge=259200)](https://www.nuget.org/packages/WindowsForm.Console)
+[![NuGet](https://img.shields.io/nuget/v/WindowsForm.Console.svg)](https://www.nuget.org/packages/WindowsForm.Console)
+
 # WindowsForm.Console
 Component of WindowsForm Console
 
