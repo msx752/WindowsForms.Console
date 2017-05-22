@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -109,7 +110,7 @@ namespace WindowsForm.Console
             Arguments = new string[0];
             BackColor = Color.Black;
             ForeColor = Color.FromArgb(0xdf, 0xd8, 0xc2);
-            Dock = DockStyle.Fill;
+            Dock = DockStyle.None;
             BorderStyle = BorderStyle.None;
             ReadOnly = true;
             Font = new Font("consolas", 10);
