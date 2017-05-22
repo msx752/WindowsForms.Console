@@ -48,6 +48,7 @@ namespace SampleFormApplication
             else
             {
                 button4.Text = "ReadOnly (OFF)";
+                MessageBox.Show("some of features may work with readonly mode such as readline, read key, but now it is okey if until you see any error :)");
             }
         }
 
