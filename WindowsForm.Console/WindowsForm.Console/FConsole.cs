@@ -262,7 +262,7 @@ namespace WindowsForm.Console
             ReadOnly = false;
             State = ConsoleState.ReadKey;
             while (InputEnable)
-                Thread.Sleep(1);//needs improve
+                Thread.Sleep(1); //needs improvement
             ReadOnly = recentReadState;
             return CurrentKey;
         }
@@ -281,7 +281,7 @@ namespace WindowsForm.Console
             ReadOnly = false;
             State = ConsoleState.ReadLine;
             while (InputEnable)
-                Thread.Sleep(1);//needs improve
+                Thread.Sleep(1);//needs improvement
             Cursor = Cursors.IBeam;
             ReadOnly = recentReadState;
             return CurrentLine;
