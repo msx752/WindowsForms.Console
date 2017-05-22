@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsForm.Console
@@ -254,13 +255,15 @@ namespace WindowsForm.Console
         /// </returns>
         public char ReadKey()
         {
+            var recentReadState = ReadOnly;
             CurrentKey = ' ';
             ReadPoint = Text.Length;
             InputEnable = true;
             ReadOnly = false;
             State = ConsoleState.ReadKey;
-            while (InputEnable) Thread.Sleep(1);
-
+            while (InputEnable)
+                Thread.Sleep(1);//needs improve
+            ReadOnly = recentReadState;
             return CurrentKey;
         }
 
@@ -271,13 +274,16 @@ namespace WindowsForm.Console
         /// </returns>
         public string ReadLine()
         {
+            var recentReadState = ReadOnly;
             CurrentLine = "";
             ReadPoint = TextLength;
             InputEnable = true;
             ReadOnly = false;
             State = ConsoleState.ReadLine;
-            while (InputEnable) Thread.Sleep(1);
+            while (InputEnable)
+                Thread.Sleep(1);//needs improve
             Cursor = Cursors.IBeam;
+            ReadOnly = recentReadState;
             return CurrentLine;
         }
 
