@@ -44,5 +44,9 @@ Component of WindowsForm Console
 ```
 ![FConsole](https://raw.githubusercontent.com/msx752/WindowsForm.Console/master/example1.png)
 
+# Dependencies
+- System.Windows.Form
+- System.Threading.*
+- 
 # Example Project
 - component is used for [MSniper Project](https://github.com/msx752/MSniper)
