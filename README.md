@@ -5,6 +5,11 @@
 Component of WindowsForm Console
 
 # Usage
+- import nuget package to the project
+
+```
+        Install-Package WindowsForm.Console
+```
 - initial code
 ```c#
         public Form1()
