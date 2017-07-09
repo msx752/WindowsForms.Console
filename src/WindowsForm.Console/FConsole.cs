@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForm.Console.Enums;
 
 namespace WindowsForm.Console
 {
@@ -253,38 +254,44 @@ namespace WindowsForm.Console
         /// </summary>
         /// <returns>
         /// </returns>
-        public char ReadKey()
+        public async Task<char> ReadKey()
         {
-            var recentReadState = ReadOnly;
-            CurrentKey = ' ';
-            ReadPoint = Text.Length;
-            InputEnable = true;
-            ReadOnly = false;
-            State = ConsoleState.ReadKey;
-            while (InputEnable)
-                Thread.Sleep(1); //needs improvement
-            ReadOnly = recentReadState;
-            return CurrentKey;
+            return await Task.Run(() =>
+             {
+                 var recentReadState = ReadOnly;
+                 CurrentKey = ' ';
+                 ReadPoint = Text.Length;
+                 InputEnable = true;
+                 ReadOnly = false;
+                 State = ConsoleState.ReadKey;
+                 while (InputEnable)
+                     Thread.Sleep(1); //needs improvement
+                 ReadOnly = recentReadState;
+                 return CurrentKey;
+             });
         }
 
         /// <summary>
-        /// stop line 
+        /// read line 
         /// </summary>
         /// <returns>
         /// </returns>
-        public string ReadLine()
+        public async Task<string> ReadLine()
         {
-            var recentReadState = ReadOnly;
-            CurrentLine = "";
-            ReadPoint = TextLength;
-            InputEnable = true;
-            ReadOnly = false;
-            State = ConsoleState.ReadLine;
-            while (InputEnable)
-                Thread.Sleep(1);//needs improvement
-            Cursor = Cursors.IBeam;
-            ReadOnly = recentReadState;
-            return CurrentLine;
+            return await Task.Run(() =>
+              {
+                  var recentReadState = ReadOnly;
+                  CurrentLine = "";
+                  ReadPoint = TextLength;
+                  InputEnable = true;
+                  ReadOnly = false;
+                  State = ConsoleState.ReadLine;
+                  while (InputEnable)
+                      Thread.Sleep(1);//needs improvement
+                  Cursor = Cursors.IBeam;
+                  ReadOnly = recentReadState;
+                  return CurrentLine;
+              });
         }
 
         /// <summary>
@@ -328,12 +335,15 @@ namespace WindowsForm.Console
         /// </param>
         /// <param name="color">
         /// </param>
-        public void Write(string message, Color? color = null)
+        public async void Write(string message, Color? color = null)
         {
-            while (Pause) Thread.Sleep(1);
-            Select(TextLength, 0);
-            SetText(message, color);
-            DeselectAll();
+            await Task.Run(() =>
+             {
+                 while (Pause) Thread.Sleep(1);
+                 Select(TextLength, 0);
+                 SetText(message, color);
+                 DeselectAll();
+             });
         }
 
         /// <summary>

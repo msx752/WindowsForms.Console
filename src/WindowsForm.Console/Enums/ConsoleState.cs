@@ -1,4 +1,4 @@
-﻿namespace WindowsForm.Console
+﻿namespace WindowsForm.Console.Enums
 {
     public enum ConsoleState
     {

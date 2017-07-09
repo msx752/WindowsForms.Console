@@ -1,4 +1,6 @@
 ﻿
+using WindowsForm.Console.Enums;
+
 namespace SampleFormApplication
 {
     partial class Form1
@@ -92,7 +94,7 @@ namespace SampleFormApplication
             this.fconsole1.ReadOnly = true;
             this.fconsole1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.fconsole1.Size = new System.Drawing.Size(764, 327);
-            this.fconsole1.State = WindowsForm.Console.ConsoleState.ReadLine;
+            this.fconsole1.State = ConsoleState.ReadLine;
             this.fconsole1.TabIndex = 3;
             this.fconsole1.Text = "WindowsForm Console";
             this.fconsole1.Title = "Form1";

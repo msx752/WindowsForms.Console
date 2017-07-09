@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleState.cs" />
+    <Compile Include="Enums\ConsoleState.cs" />
+    <Compile Include="Extensions\FConsoleExtensions.cs" />
     <Compile Include="FConsole.cs">
       <SubType>Component</SubType>
     </Compile>

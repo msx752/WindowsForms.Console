@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForm.Console.Extensions;
 
 namespace SampleFormApplication
 {
@@ -20,7 +21,7 @@ namespace SampleFormApplication
 
         private void button1_Click(object sender, EventArgs e)
         {
-            fconsole1.Write("this is an example line text!.",
+            this.Write("this is an example line text!.",
                 Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));//used SelectedIndex for preventing a crash
         }
 
@@ -54,13 +55,13 @@ namespace SampleFormApplication
 
         private void button2_Click(object sender, EventArgs e)
         {
-            fconsole1.WriteLine("this is an example line text!.",
-            Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));//used SelectedIndex for preventing a crash
+            this.WriteLine("this is an example line text!.",
+                Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));////used SelectedIndex for preventing a crash
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            fconsole1.WriteLine(" http://github.com/msx752/WindowsForm.Console",
+            this.WriteLine(" http://github.com/msx752/WindowsForm.Console",
             Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));//used SelectedIndex for preventing a crash)
         }
 
@@ -69,24 +70,18 @@ namespace SampleFormApplication
             fconsole1.ForeColor = Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString());
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private async void button6_Click(object sender, EventArgs e)
         {
-            Task.Run(() =>
-            {
-                //needs improvement
-                var line = fconsole1.ReadLine();
-            });
+            var line = await this.ReadLine();
+            MessageBox.Show("Red line is " + line);
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private async void button7_Click(object sender, EventArgs e)
         {
-            fconsole1.WriteLine(" Press Any Key..",
+            this.WriteLine(" Press Any Key..",
              Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));//used SelectedIndex for preventing a crash)
-            Task.Run(() =>
-            //needs improvement
-            {
-                var key = fconsole1.ReadKey();
-            });
+            var key = await this.ReadKey();
+            MessageBox.Show("Pressed key is " + key);
         }
     }
 }
