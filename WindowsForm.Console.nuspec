@@ -53,9 +53,7 @@
     <file src="src\WindowsForm.Console\bin\v4.6.2\WindowsForm.Console.pdb" target="lib\net462\WindowsForm.Console.pdb" />
 
 
-    <file src="src\WindowsForm.Console\bin\v4.7\WindowsForm.Console.dll" target="lib\net47\WindowsForm.Console.dll" />
-    <file src="src\WindowsForm.Console\bin\v4.7\WindowsForm.Console.xml" target="lib\net47\WindowsForm.Console.xml" />
-    <file src="src\WindowsForm.Console\bin\v4.7\WindowsForm.Console.pdb" target="lib\net47\WindowsForm.Console.pdb" />
+    
 
 
     </files>
