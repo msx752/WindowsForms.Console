@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>WindowsForm.Console</id>
+        <version>1.0.0.0</version>
+        <title>WindowsForm Console Implementation</title>
+        <authors>Mustafa Salih ASLIM</authors>
+        <owners>Mustafa Salih ASLIM</owners>
+        <licenseUrl>https://github.com/msx752/WindowsForm.Console/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/msx752/WindowsForm.Console</projectUrl>
+        <iconUrl>https://github.com/msx752/WindowsForm.Console/blob/master/wfc.png?raw=true</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Component of WindowsForm Console, ConsoleGUI is added to WindowsForm Application.</description>
+        <releaseNotes></releaseNotes>
+        <copyright>Copyright 2017</copyright>
+        <tags>FConsole WindowsForm.Console WinConsole Console Component WinFormConsole</tags>
+        <dependencies>
+            <group>
+                <dependency id="Xamarin.Forms" version="2.3.4.247" />
+            </group>
+            
+            
+        </dependencies>
+    </metadata>
+    <files>
+    <file src="src\BaseMvvm\bin\Release\BaseMvvm.XamarinForms.dll" target="lib\portable45-net45+win8+wp8+wpa81\BaseMvvm.XamarinForms.dll" />
+    <file src="src\BaseMvvm\bin\Release\BaseMvvm.XamarinForms.xml" target="lib\portable45-net45+win8+wp8+wpa81\BaseMvvm.XamarinForms.xml" />
+    <file src="src\BaseMvvm\bin\Release\BaseMvvm.XamarinForms.pdb" target="lib\portable45-net45+win8+wp8+wpa81\BaseMvvm.XamarinForms.pdb" />
+
+    <file src="src\BaseMvvm.Droid\bin\release\BaseMvvm.Droid.dll" target="lib\monoandroid60\BaseMvvm.Droid.dll" />
+    <file src="src\BaseMvvm.Droid\bin\release\BaseMvvm.Droid.xml" target="lib\monoandroid60\BaseMvvm.Droid.xml" />
+    <file src="src\BaseMvvm.Droid\bin\release\BaseMvvm.Droid.pdb" target="lib\monoandroid60\BaseMvvm.Droid.pdb" />
+
+    <file src="src\BaseMvvm.iOS\bin\release\BaseMvvm.iOS.dll" target="lib\xamarinios10\BaseMvvm.iOS.dll" />
+    <file src="src\BaseMvvm.iOS\bin\release\BaseMvvm.iOS.xml" target="lib\xamarinios10\BaseMvvm.iOS.xml" />
+    <file src="src\BaseMvvm.iOS\bin\release\BaseMvvm.iOS.pdb" target="lib\xamarinios10\BaseMvvm.iOS.pdb" /> 
+
+    </files>
+</package>
