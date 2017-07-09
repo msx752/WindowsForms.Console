@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/enn19h5tkvhy2w95?svg=true)](https://ci.appveyor.com/project/msx752/windowsform-console)
 
 # WindowsForm.Console
-Component of WindowsForm Console
+Component of WindowsForm
 
 # Usage
 - import nuget package to the project
@@ -11,7 +11,7 @@ Component of WindowsForm Console
 ```
         Install-Package WindowsForm.Console
 ```
-- initial code
+- initial code for any Form which has FConsole component
 ```c#
         public Form1()
         {
@@ -19,7 +19,7 @@ Component of WindowsForm Console
             CheckForIllegalCrossThreadCalls = false; // <=== this is important for async access to thread
         }
 ```
-- add 'FConsole' component to FormControl ([you can see how to add](https://stackoverflow.com/questions/2101171/how-to-add-user-control-in-the-toolbox-for-c-net-for-winforms-by-importing-the))
+- add 'FConsole' component to FormControl ([you can see how to](https://stackoverflow.com/questions/2101171/how-to-add-user-control-in-the-toolbox-for-c-net-for-winforms-by-importing-the))
 
 - example codes
 ```c#
@@ -47,13 +47,14 @@ Component of WindowsForm Console
 ```
 ![FConsole](https://raw.githubusercontent.com/msx752/WindowsForm.Console/master/example1.png)
 
-# Supported Applications
+# Supported Platforms
 - [x] WindowsForm Application
+- v4.5 to 4.6.2 (v4.7 temporarily not supported)
 - [ ] WPF (not supported yet)
 
 # Dependencies
 - System.Windows.Form
-- System.Threading.*
+- System
 
 # Example Project
-- component is used for [MSniper Project](https://github.com/msx752/MSniper)
+- component is used in [MSniper Project](https://github.com/msx752/MSniper)
