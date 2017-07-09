@@ -24,24 +24,26 @@ Component of WindowsForm Console
 - example codes
 ```c#
         fconsole1.WriteLine("text");
+        this.WriteLine("text");//(extension method)
+        
         fconsole1.WriteLine("text",Color.White);
+        this.WriteLine("text",Color.White);//(extension method)
         
         fconsole1.Write("text");
+        this.Write("text");//(extension method)
+        
         fconsole1.Write("text",Color.White);
+        this.Write("text",Color.White);//(extension method)
         
-        //Task used due to access the other thread (needs improvement)
-        Task.Run(() =>
-            {
-                
-                var line = fconsole1.ReadLine();
-            });
         
-        //Task used due to access the other thread (needs improvement)
-        Task.Run(() =>
-            {
-                //needs improvement
-                var line = fconsole1.ReadKey();
-            });
+        var line = fconsole1.ReadLine();//used in async method
+        //or
+        var line = this.ReadLine();//this as any Form (extension method)
+        
+       
+       var line = await fconsole1.ReadKey(); //used in async method
+       //or
+       var line = await this.ReadKey();//(extension method)
 ```
 ![FConsole](https://raw.githubusercontent.com/msx752/WindowsForm.Console/master/example1.png)
 
