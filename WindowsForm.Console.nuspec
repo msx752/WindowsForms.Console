@@ -10,7 +10,7 @@
         <projectUrl>https://github.com/msx752/WindowsForm.Console</projectUrl>
         <iconUrl>https://github.com/msx752/WindowsForm.Console/blob/master/wfc.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Component of WindowsForm Console, ConsoleGUI is added to WindowsForm Application.</description>
+        <description>Component of WindowsForm, ConsoleGUI is added to WindowsForm Application.</description>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <tags>FConsole WindowsForm.Console WinConsole Console Component WinFormConsole</tags>
