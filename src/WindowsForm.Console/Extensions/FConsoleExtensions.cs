@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace WindowsForm.Console.Extensions
 {
+    /// <summary>
+    /// for easy access to properties of FConsole 
+    /// </summary>
     public static class FConsoleExtensions
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace WindowsForm.Console.Extensions
         }
 
         /// <summary>
-        /// extension of read line 
+        /// extension of readline 
         /// </summary>
         /// <returns>
         /// </returns>
@@ -75,12 +78,14 @@ namespace WindowsForm.Console.Extensions
         }
 
         /// <summary>
+        /// finds all specific type of controls 
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="mainControl">
         /// </param>
         /// <param name="getAllChild">
+        /// search at child 
         /// </param>
         /// <returns>
         /// </returns>

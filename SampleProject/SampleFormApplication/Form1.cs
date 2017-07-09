@@ -16,7 +16,7 @@ namespace SampleFormApplication
         public Form1()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false;//this is important for async accessing
+            CheckForIllegalCrossThreadCalls = false;//this is important for async threading
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace SampleFormApplication
             else
             {
                 button4.Text = "ReadOnly (OFF)";
-                MessageBox.Show("some of features may work with readonly mode such as readline, read key, but now it is okey if until you see any error :)");
+                MessageBox.Show("some of features may not work with readonly mode such as readline and read key, but now it is okey until you see any error :)");
             }
         }
 

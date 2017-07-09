@@ -1,5 +1,8 @@
 ﻿namespace WindowsForm.Console.Enums
 {
+    /// <summary>
+    /// state controller of FConsole 
+    /// </summary>
     public enum ConsoleState
     {
         ReadLine = 0,
