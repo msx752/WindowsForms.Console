@@ -14,6 +14,6 @@ if($($env:APPVEYOR)){
 & $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath="bin\v4.6";
 & $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath="bin\v4.6.1";
 & $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath="bin\v4.6.2";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath="bin\v4.7";
+#& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath="bin\v4.7";
 
 .\nuget pack WindowsForm.Console.nuspec;
