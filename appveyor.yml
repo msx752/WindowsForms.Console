@@ -1,0 +1,20 @@
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+skip_tags: true
+skip_branch_with_pr: true
+clone_depth: 5
+init:
+- ps: "if($($env:APPVEYOR))\n{ \n$timeZone = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow, \"Turkey Standard Time\");\n[datetime]$DateTime = $timeZone.ToString();\n\n$year = $DateTime.ToString(\"y.\").TrimEnd('.');\n$buildYear = (($year - 17) + 1);\n$buildTime = $DateTime.ToString(\"M.d.hmm\");\n$newBuildNumber = \"$buildYear.$buildTime\";\n\nUpdate-AppveyorBuild -Version $newBuildNumber;\n}\nelse\n{\n    Write-Host \"AppVeyor was not detected\";\n}"
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: $(APPVEYOR_BUILD_VERSION)
+  assembly_file_version: $(APPVEYOR_BUILD_VERSION)
+  assembly_informational_version: $(APPVEYOR_BUILD_VERSION)
+cache: packages
+build_script:
+- ps: "if($($env:APPVEYOR))\n{ \n    $SVersion = $($env:APPVEYOR_BUILD_VERSION);\n    Write-Host \"WindowsForm.Console Version:$SVersion\";\n\n.\\nuget restore WindowsForm.Console.sln;\n    $msbuild = \"C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe\"\n    & $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5 /p:OutputPath=\"bin\\v4.5\";\n& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath=\"bin\\v4.5.1\";\n& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath=\"bin\\v4.5.2\";\n& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath=\"bin\\v4.6\";\n& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath=\"bin\\v4.6.1\";\n& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath=\"bin\\v4.6.2\";\n#& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath=\"bin\\v4.7\";\n\n    .\\nuget pack WindowsForm.Console.nuspec -version $SVersion;\n\n    Push-AppveyorArtifact \"$($env:APPVEYOR_BUILD_FOLDER)\\WindowsForm.Console.$SVersion.nupkg\" -FileName \"WindowsForm.Console.$SVersion.nupkg\" -DeploymentName \"NugetPackage1\";\n}\nelse\n{\n    Write-Host \"AppVeyor was not detected\";\n}"
