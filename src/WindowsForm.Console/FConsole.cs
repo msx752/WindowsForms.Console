@@ -16,6 +16,8 @@ namespace WindowsForm.Console
     /// </summary>
     public class FConsole : RichTextBox
     {
+        private bool _pause;
+
         public FConsole()
         {
             KeyDown += FConsole_KeyDown;
@@ -68,6 +70,16 @@ namespace WindowsForm.Console
         public ConsoleState State { get; set; }
 
         /// <summary>
+        /// after calling readline method sets ReadOnly= true (default:true) 
+        /// </summary>
+        public bool SecureReadLine { get; set; }
+
+        /// <summary>
+        /// auto scrolling to end when adds newLine (default:true) 
+        /// </summary>
+        public bool AutoScrollToEndLine { get; set; }
+
+        /// <summary>
         /// console title (not necessary :) ) 
         /// </summary>
         public string Title { get { if (Parent != null) return Parent.Text; else return ""; } set { if (Parent != null) Parent.Text = value; } }
@@ -89,21 +101,49 @@ namespace WindowsForm.Console
         /// </summary>
         private List<string> recentlist { get; set; }
 
-        /// <summary>
-        /// recent list of console limiter 
-        /// </summary>
         private int RecentCount { get; set; }
+
+        private object _lockInputEnable = new object();
 
         /// <summary>
         /// read mode checker 
         /// </summary>
-        private bool InputEnable { get; set; }
+        private bool InputEnable
+        {
+            get
+            {
+                lock (_lockInputEnable)
+                    return _inputEnable;
+            }
+            set
+            {
+                lock (_lockInputEnable)
+                    _inputEnable = value;
+            }
+        }
+
+        private object _lockPause = new object();
 
         /// <summary>
         /// console pause checker 
         /// </summary>
-        private bool Pause { get; set; }
+        private bool Pause
+        {
+            get
+            {
+                lock (_lockPause)
+                    return _pause;
+            }
+            set
+            {
+                lock (_lockPause)
+                    _pause = value;
+            }
+        }
 
+        /// <summary>
+        /// Initialize Console 
+        /// </summary>
         public void InitializeFConsole()
         {
             Name = "FConsole";
@@ -128,6 +168,10 @@ namespace WindowsForm.Console
             }
             DetectUrls = true;
             recentlist = new List<string>();
+            SecureReadLine = true;
+            AutoScrollToEndLine = true;
+            State = ConsoleState.Writing;
+            LastUsedColor = SelectionColor;
         }
 
         public string RecentUndo()
@@ -212,7 +256,7 @@ namespace WindowsForm.Console
                 {
                     Cursor = Cursors.WaitCursor;
                     ReadOnly = true;
-                    CurrentLine = Lines[Lines.Count() - 1];
+                    CurrentLine = CurrentLines[CurrentLines.Count() - 1];
                     recentlist.Add(CurrentLine);
                     WriteLine("");
                     InputEnable = false;
@@ -249,27 +293,43 @@ namespace WindowsForm.Console
             InputEnable = false;
         }
 
+        private object _lockReadKey = new object();
+
         /// <summary>
         /// stop line 
         /// </summary>
         /// <returns>
         /// </returns>
-        public async Task<char> ReadKey()
+        public async Task<char> ReadKey(Color? color = null)
         {
+            if (State == ConsoleState.ReadKey)
+            {
+                InputEnable = false;
+            }
+            Color Color = ForeColor;
+            if (color.HasValue)
+                Color = color.Value;
+            WriteLine(" Press Any Key...", Color);
             return await Task.Run(() =>
-             {
-                 var recentReadState = ReadOnly;
-                 CurrentKey = ' ';
-                 ReadPoint = Text.Length;
-                 InputEnable = true;
-                 ReadOnly = false;
-                 State = ConsoleState.ReadKey;
-                 while (InputEnable)
-                     Thread.Sleep(1); //needs improvement
-                 ReadOnly = recentReadState;
-                 return CurrentKey;
-             });
+            {
+                var recentReadState = ReadOnly;
+                CurrentKey = ' ';
+                ReadPoint = Text.Length;
+                InputEnable = true;
+                ReadOnly = false;
+                State = ConsoleState.ReadKey;
+                while (InputEnable)
+                    Thread.Sleep(1); //needs improvement
+                if (SecureReadLine)
+                    ReadOnly = true;
+                else
+                    ReadOnly = recentReadState;
+                State = ConsoleState.Writing;
+                return CurrentKey;
+            });
         }
+
+        private object _lockReadLine = new object();
 
         /// <summary>
         /// read line 
@@ -280,18 +340,38 @@ namespace WindowsForm.Console
         {
             return await Task.Run(() =>
               {
-                  var recentReadState = ReadOnly;
-                  CurrentLine = "";
-                  ReadPoint = TextLength;
-                  InputEnable = true;
-                  ReadOnly = false;
-                  State = ConsoleState.ReadLine;
-                  while (InputEnable)
-                      Thread.Sleep(1);//needs improvement
-                  Cursor = Cursors.IBeam;
-                  ReadOnly = recentReadState;
-                  return CurrentLine;
+                  lock (_lockReadLine)
+                  {
+                      var recentReadState = ReadOnly;
+                      CurrentLine = "";
+                      ReadPoint = TextLength;
+                      InputEnable = true;
+                      ReadOnly = false;
+                      State = ConsoleState.ReadLine;
+                      while (InputEnable)
+                          Thread.Sleep(1);//needs improvement
+                      Cursor = Cursors.IBeam;
+                      if (SecureReadLine)
+                          ReadOnly = true;
+                      else
+                          ReadOnly = recentReadState;
+                      State = ConsoleState.Writing;
+                      return CurrentLine;
+                  }
               });
+        }
+
+        private object _lockLines = new object();
+
+        public string[] CurrentLines
+        {
+            get
+            {
+                lock (_lockLines)
+                {
+                    return Lines;
+                }
+            }
         }
 
         /// <summary>
@@ -299,13 +379,11 @@ namespace WindowsForm.Console
         /// </summary>
         public void SelectLastLine()
         {
-            if (Lines.Any())
+            if (CurrentLines.Any())
             {
-                var line = Lines.Count() - 1;
+                var line = CurrentLines.Count() - 1;
                 var s1 = GetFirstCharIndexOfCurrentLine();
-                var s2 = line < Lines.Count() - 1 ?
-                          GetFirstCharIndexFromLine(line + 1) - 1 :
-                          Text.Length;
+                var s2 = line < CurrentLines.Count() - 1 ? GetFirstCharIndexFromLine(line + 1) - 1 : Text.Length;
                 Select(s1, s2 - s1);
             }
         }
@@ -328,6 +406,9 @@ namespace WindowsForm.Console
             SetText(message, color);
         }
 
+        private readonly object _lockWrite = new object();
+        private bool _inputEnable;
+
         /// <summary>
         /// write function 
         /// </summary>
@@ -335,31 +416,50 @@ namespace WindowsForm.Console
         /// </param>
         /// <param name="color">
         /// </param>
-        public async void Write(string message, Color? color = null)
+        /// <param name="showTimeTag">
+        /// shows time on output 
+        /// </param>
+        public void Write(string message, Color? color = null, bool showTimeTag = false)
         {
-            await Task.Run(() =>
-             {
-                 while (Pause) Thread.Sleep(1);
-                 Select(TextLength, 0);
-                 SetText(message, color);
-                 DeselectAll();
-             });
+            Task.Run(() =>
+            {
+                lock (_lockWrite)
+                {
+                    var recentReadState = ReadOnly;
+                    Select(TextLength, 0);
+                    if (!message.EndsWith(Environment.NewLine) ||
+                    State == ConsoleState.ReadLine ||
+                    State == ConsoleState.ReadKey ||
+                    message == "\r\n")
+                        showTimeTag = false;
+                    if (showTimeTag)
+                        message = $"{DateTime.Now}: {message}";
+
+                    SetText(message, color);
+                    DeselectAll();
+                    if (AutoScrollToEndLine)
+                        this.ScrollToCaret();
+                    if (SecureReadLine)
+                        ReadOnly = true;
+                    else
+                        ReadOnly = recentReadState;
+                    State = ConsoleState.Writing;
+                }
+            }).Wait();
         }
 
-        /// <summary>
-        /// it will be private method 
-        /// </summary>
-        /// <param name="message">
-        /// </param>
-        /// <param name="color">
-        /// </param>
         public void SetText(string message, Color? color = null)
         {
             if (!color.HasValue)
                 color = ForeColor;
-            SelectionColor = color.Value;
+            LastUsedColor = SelectionColor = color.Value;
             SelectedText = message;
         }
+
+        /// <summary>
+        /// stored last used color on console 
+        /// </summary>
+        public Color LastUsedColor { get; private set; }
 
         /// <summary>
         /// writeline function 
@@ -368,9 +468,9 @@ namespace WindowsForm.Console
         /// </param>
         /// <param name="color">
         /// </param>
-        public void WriteLine(string message, Color? color = null)
+        public void WriteLine(string message, Color? color = null, bool showTimeTag = false)
         {
-            Write(message + Environment.NewLine, color);
+            Write(message + Environment.NewLine, color, showTimeTag);
         }
 
         /// <summary>

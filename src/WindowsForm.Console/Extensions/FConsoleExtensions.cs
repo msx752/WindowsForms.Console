@@ -18,10 +18,10 @@ namespace WindowsForm.Console.Extensions
         /// </summary>
         /// <returns>
         /// </returns>
-        public static async Task<char> ReadKey(this Form f)
+        public static async Task<char> ReadKey(this Form f, Color? color = null)
         {
             FConsole console = CheckFConsole(f);
-            var line = await console.ReadKey();
+            var line = await console.ReadKey(color);
             return line;
         }
 
@@ -46,10 +46,14 @@ namespace WindowsForm.Console.Extensions
         /// </param>
         /// <param name="color">
         /// </param>
-        public static void WriteLine(this Form f, string message, Color? color = null)
+        /// <param name="showTimeTag">
+        /// shows time on output 
+        /// </param>
+        public static void WriteLine(this Form f, string message = null, Color? color = null, bool showTimeTag = false)
         {
             FConsole console = CheckFConsole(f);
-            console.WriteLine(message, color);
+            message = message ?? "";
+            console.WriteLine(message, color, showTimeTag);
         }
 
         /// <summary>
@@ -61,10 +65,11 @@ namespace WindowsForm.Console.Extensions
         /// </param>
         /// <param name="color">
         /// </param>
-        public static void Write(this Form f, string message, Color? color = null)
+        public static void Write(this Form f, string message = null, Color? color = null)
         {
             FConsole console = CheckFConsole(f);
-            console.Write(message, color);
+            message = message ?? "";
+            console.Write(message, color, false);
         }
 
         private static FConsole CheckFConsole(Form f)
@@ -73,7 +78,7 @@ namespace WindowsForm.Console.Extensions
             if (fconsoles.Count == 0)
                 throw new Exception("this WinForm does not have any FConsole component");
             else if (fconsoles.Count > 1)
-                throw new Exception("conflict occurs, more than one FConsole components detected.");
+                throw new Exception("conflict occurs, more than one FConsole components detected.(supported only one component on Form)");
             return fconsoles.First();
         }
 

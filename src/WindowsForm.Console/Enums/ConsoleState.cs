@@ -7,6 +7,7 @@
     {
         ReadLine = 0,
         ReadKey = 1,
-        Closing = 2
+        Closing = 2,
+        Writing = 3
     }
 }

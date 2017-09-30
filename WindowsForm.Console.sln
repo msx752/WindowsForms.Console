@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForm.Console", "src\WindowsForm.Console\WindowsForm.Console.csproj", "{6298AB3A-B82C-4148-ADAF-ADE5F7B7A663}"
 EndProject
@@ -32,5 +32,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6298AB3A-B82C-4148-ADAF-ADE5F7B7A663} = {D8D8CE0A-3704-47DB-95C4-19AD19D48D1D}
 		{D6755EDE-9F23-4986-9AD5-A817FBC0A556} = {8629138E-53EB-4727-945E-5023D3A3D3D2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {363D53B2-6B7C-4590-BC88-555C0FBE0162}
 	EndGlobalSection
 EndGlobal
