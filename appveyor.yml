@@ -79,6 +79,7 @@ build_script:
     Write-Host "$($env:APPVEYOR_PROJECT_NAME) Version:$SVersion";
 
     nuget restore;
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5 /p:OutputPath=\"bin\\v4.5\"
     msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath=\"bin\\v4.5.1\";
     msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath=\"bin\\v4.5.2\";
     msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath=\"bin\\v4.6\";
