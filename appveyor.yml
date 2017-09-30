@@ -78,20 +78,17 @@ build_script:
     $SVersion = $($env:APPVEYOR_BUILD_VERSION);
     Write-Host "$($env:APPVEYOR_PROJECT_NAME) Version:$SVersion";
 
-    $msbuild = "C:\Program Files (x86)\MSBuild\15.0\Bin\amd64\MSBuild.exe"
-
-
     $myapp = "$($env:APPVEYOR_PROJECT_NAME)";
 
     nuget restore $myapp.sln;
 
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5 /p:OutputPath="bin\v4.5";
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath="bin\v4.5.1";
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath="bin\v4.5.2";
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath="bin\v4.6";
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath="bin\v4.6.1";
-    & $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath="bin\v4.6.2";
-    #& $msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath="bin\v4.7";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5 /p:OutputPath="bin\v4.5";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath="bin\v4.5.1";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath="bin\v4.5.2";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath="bin\v4.6";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath="bin\v4.6.1";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath="bin\v4.6.2";
+    #& msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath="bin\v4.7";
 
 
     dir -Directory;
