@@ -21,6 +21,8 @@ Component of WindowsForm
 ```
 - add 'FConsole' component to FormControl ([you can see how to](https://stackoverflow.com/questions/2101171/how-to-add-user-control-in-the-toolbox-for-c-net-for-winforms-by-importing-the))
 
+- look at sample project [(for more example)](https://github.com/msx752/WindowsForm.Console/tree/master/SampleProject/SampleFormApplication)
+
 - example codes
 ```c#
         fconsole1.WriteLine("text");
