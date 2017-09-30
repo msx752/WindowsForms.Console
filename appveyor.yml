@@ -78,19 +78,20 @@ build_script:
     $SVersion = $($env:APPVEYOR_BUILD_VERSION);
     Write-Host "$($env:APPVEYOR_PROJECT_NAME) Version:$SVersion";
 
-   nuget restore WindowsForm.Console.sln;
-    $msbuild = \"C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe\"
-    & $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5 /p:OutputPath=\"bin\\v4.5\";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath=\"bin\\v4.5.1\";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath=\"bin\\v4.5.2\";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath=\"bin\\v4.6\";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath=\"bin\\v4.6.1\";
-& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath=\"bin\\v4.6.2\";
-#& $msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath=\"bin\\v4.7\";
+    nuget restore;
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.1 /p:OutputPath=\"bin\\v4.5.1\";
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.5.2 /p:OutputPath=\"bin\\v4.5.2\";
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6 /p:OutputPath=\"bin\\v4.6\";
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath=\"bin\\v4.6.1\";
+    msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath=\"bin\\v4.6.2\";
+    #msbuild WindowsForm.Console.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath=\"bin\\v4.7\";
 
-nuget pack WindowsForm.Console.nuspec -version $SVersion;
+    $myapp = "$($env:APPVEYOR_PROJECT_NAME)";
+    Write-Host  $myapp;
 
-    Push-AppveyorArtifact \"$($env:APPVEYOR_BUILD_FOLDER)\\WindowsForm.Console.$SVersion.nupkg\" -FileName \"WindowsForm.Console.$SVersion.nupkg\" -DeploymentName \"NugetPackage1\";
+    nuget pack "$myapp.nuspec" -version $newBuildNumber;
+
+    Push-AppveyorArtifact "$($env:APPVEYOR_BUILD_FOLDER)\$myapp.$SVersion.nupkg" -FileName "$myapp.$SVersion.nupkg" -DeploymentName "$myapp";
     }
     else
     {
