@@ -52,6 +52,7 @@ Component of WindowsForm
 # Supported Platforms
 - [x] WindowsForm Application
 - v4.5 to 4.6.2 (v4.7 temporarily not supported)
+- .Net Core 3.0
 - [ ] WPF (not supported yet)
 
 # Dependencies
