@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/msx752/WindowsForm.Console</PackageProjectUrl>
     <RepositoryUrl>https://github.com/msx752/WindowsForm.Console</RepositoryUrl>
     <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageId>WindowsForms.Console</PackageId>
 
   </PropertyGroup>
 

@@ -85,9 +85,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForm.Console.csproj">
+    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForms.Console.csproj">
       <Project>{6298ab3a-b82c-4148-adaf-ade5f7b7a663}</Project>
-      <Name>WindowsForm.Console</Name>
+      <Name>WindowsForms.Console</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

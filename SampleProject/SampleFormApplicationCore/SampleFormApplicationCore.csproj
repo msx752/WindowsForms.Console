@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForm.Console.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,6 +49,10 @@
 
   <ItemGroup>
     <None Include="..\SampleFormApplication\Properties\Settings.settings" Link="Properties\Settings.settings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForms.Console.csproj" />
   </ItemGroup>
 
 </Project>
