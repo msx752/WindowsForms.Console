@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForms.Console.csproj" />
+    <ProjectReference Include="..\..\src\WindowsForms.Console\WindowsForms.Console.csproj" />
   </ItemGroup>
 
 </Project>

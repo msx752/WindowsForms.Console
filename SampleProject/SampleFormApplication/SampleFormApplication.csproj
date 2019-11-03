@@ -85,7 +85,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WindowsForm.Console\WindowsForms.Console.csproj">
+    <ProjectReference Include="..\..\src\WindowsForms.Console\WindowsForms.Console.csproj">
       <Project>{6298ab3a-b82c-4148-adaf-ade5f7b7a663}</Project>
       <Name>WindowsForms.Console</Name>
     </ProjectReference>
