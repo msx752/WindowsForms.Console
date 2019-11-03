@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0.0</Version>
+    <Authors>Mustafa Salih ASLIM</Authors>
+    <PackageReleaseNotes>FConsole, WinConsole, Console, WindowsForm.Console, Component, WinFormConsole</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/msx752/WindowsForm.Console</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/msx752/WindowsForm.Console</RepositoryUrl>
+    <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageId>WindowsForms.Console</PackageId>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
