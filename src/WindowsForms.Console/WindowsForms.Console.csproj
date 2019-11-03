@@ -7,11 +7,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>2.0.0.0</Version>
     <Authors>Mustafa Salih ASLIM</Authors>
-    <PackageReleaseNotes>FConsole, WinConsole, Console, WindowsForm.Console, Component, WinFormConsole</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/msx752/WindowsForm.Console</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/msx752/WindowsForm.Console</RepositoryUrl>
+    <PackageReleaseNotes>FConsole, WinConsole, Console, WindowsForms.Console, Component, WinFormConsole</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/msx752/WindowsForms.Console</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/msx752/WindowsForms.Console</RepositoryUrl>
     <PackageLicenseFile>README.md</PackageLicenseFile>
-    <PackageId>WindowsForms.Console</PackageId>
+    <PackageId>WindowsForm.Console</PackageId>
 
   </PropertyGroup>
 
