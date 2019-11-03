@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>WindowsForm.Console</id>
+        <version>1.0.0.0</version>
+        <title>WindowsForms Console Implementation</title>
+        <authors>Mustafa Salih ASLIM</authors>
+        <owners>Mustafa Salih ASLIM</owners>
+        <licenseUrl>https://github.com/msx752/WindowsForms.Console/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/msx752/WindowsForms.Console</projectUrl>
+        <iconUrl>https://github.com/msx752/WindowsForms.Console/blob/master/wfc.png?raw=true</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Component of WindowsForm, ConsoleGUI is added to WindowsForm Application.</description>
+        <releaseNotes />
+        <copyright>Copyright 2017</copyright>
+        <tags>FConsole WindowsForms.Console WinConsole Console Component WinFormConsole</tags>
+        <dependencies>
+            <group>
+                <dependency id="System" version="4.0.0.0" />
+                <dependency id="System.Windows.Forms" version="4.0.0.0" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+    <file src="src\WindowsForms.Console\bin\v4.5\WindowsForms.Console.dll" target="lib\net45\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.5\WindowsForms.Console.xml" target="lib\net45\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.5\WindowsForms.Console.pdb" target="lib\net45\WindowsForms.Console.pdb" />
+
+
+    <file src="src\WindowsForms.Console\bin\v4.5.1\WindowsForms.Console.dll" target="lib\net451\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.5.1\WindowsForms.Console.xml" target="lib\net451\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.5.1\WindowsForms.Console.pdb" target="lib\net451\WindowsForms.Console.pdb" />
+
+
+    <file src="src\WindowsForms.Console\bin\v4.5.2\WindowsForms.Console.dll" target="lib\net452\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.5.2\WindowsForms.Console.xml" target="lib\net452\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.5.2\WindowsForms.Console.pdb" target="lib\net452\WindowsForms.Console.pdb" />
+
+
+
+    <file src="src\WindowsForms.Console\bin\v4.6\WindowsForms.Console.dll" target="lib\net46\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.6\WindowsForms.Console.xml" target="lib\net46\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.6\WindowsForms.Console.pdb" target="lib\net46\WindowsForms.Console.pdb" />
+
+
+    <file src="src\WindowsForms.Console\bin\v4.6.1\WindowsForms.Console.dll" target="lib\net461\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.6.1\WindowsForms.Console.xml" target="lib\net461\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.6.1\WindowsForms.Console.pdb" target="lib\net461\WindowsForms.Console.pdb" />
+
+
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.dll" target="lib\net462\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.xml" target="lib\net462\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.pdb" target="lib\net462\WindowsForm.Console.pdb" />
+
+
+    
+
+
+    </files>
+</package>
