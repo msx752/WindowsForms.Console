@@ -89,6 +89,7 @@ build_script:
     & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.1 /p:OutputPath="bin\v4.6.1";
     & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.6.2 /p:OutputPath="bin\v4.6.2";
     #& msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=v4.7 /p:OutputPath="bin\v4.7";
+    & msbuild $myapp.sln /property:Configuration=Release /p:TargetFrameworkVersion=netcoreapp3.0 /p:OutputPath="bin\netcoreapp3.0";
 
 
     dir -Directory;

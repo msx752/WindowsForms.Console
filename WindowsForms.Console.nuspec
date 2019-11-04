@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
-        <id>WindowsForm.Console</id>
+        <id>WindowsForms.Console</id>
         <version>1.0.0.0</version>
         <title>WindowsForms Console Implementation</title>
         <authors>Mustafa Salih ASLIM</authors>
@@ -10,7 +10,7 @@
         <projectUrl>https://github.com/msx752/WindowsForms.Console</projectUrl>
         <iconUrl>https://github.com/msx752/WindowsForms.Console/blob/master/wfc.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Component of WindowsForm, ConsoleGUI is added to WindowsForm Application.</description>
+        <description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application.</description>
         <releaseNotes />
         <copyright>Copyright 2017</copyright>
         <tags>FConsole WindowsForms.Console WinConsole Console Component WinFormConsole</tags>
@@ -50,10 +50,17 @@
 
     <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.dll" target="lib\net462\WindowsForms.Console.dll" />
     <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.xml" target="lib\net462\WindowsForms.Console.xml" />
-    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.pdb" target="lib\net462\WindowsForm.Console.pdb" />
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.pdb" target="lib\net462\WindowsForms.Console.pdb" />
 
 
-    
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.dll" target="lib\net462\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.xml" target="lib\net462\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\v4.6.2\WindowsForms.Console.pdb" target="lib\net462\WindowsForms.Console.pdb" />
+
+
+    <file src="src\WindowsForms.Console\bin\netcoreapp3.0\WindowsForms.Console.dll" target="lib\netcoreapp3.0\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\netcoreapp3.0\WindowsForms.Console.xml" target="lib\netcoreapp3.0\WindowsForms.Console.xml" />
+    <file src="src\WindowsForms.Console\bin\netcoreapp3.0\WindowsForms.Console.pdb" target="lib\netcoreapp3.0\WindowsForms.Console.pdb" />
 
 
     </files>
