@@ -95,9 +95,10 @@ build_script:
 
     Write-Host  $myapp;
 
-    nuget pack "WindowsForm.Console.nuspec" -version $newBuildNumber;
+    $myapp = "WindowsForm.Console";
+    nuget pack "$myapp.nuspec" -version $newBuildNumber;
 
-    Push-AppveyorArtifact "$($env:APPVEYOR_BUILD_FOLDER)\WindowsForm.Console.$SVersion.nupkg" -FileName "WindowsForm.Console.$SVersion.nupkg" -DeploymentName "$myapp";
+    Push-AppveyorArtifact "$($env:APPVEYOR_BUILD_FOLDER)\$myapp.$SVersion.nupkg" -FileName "$myapp.$SVersion.nupkg" -DeploymentName "$myapp";
     }
     else
     {
