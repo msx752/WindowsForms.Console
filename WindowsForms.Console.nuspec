@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>WindowsForms.Console</id>
-        <version>1.0.0.0</version>
+        <version>2.0.0.10</version>
         <title>WindowsForms Console Implementation</title>
         <authors>Mustafa Salih ASLIM</authors>
         <owners>Mustafa Salih ASLIM</owners>
@@ -62,6 +62,9 @@
     <file src="src\WindowsForms.Console\bin\netcoreapp3.0\WindowsForms.Console.xml" target="lib\netcoreapp3.0\WindowsForms.Console.xml" />
     <file src="src\WindowsForms.Console\bin\netcoreapp3.0\WindowsForms.Console.pdb" target="lib\netcoreapp3.0\WindowsForms.Console.pdb" />
 
+    <file src="src\WindowsForms.Console\bin\net5.0\WindowsForms.Console.dll" target="lib\net5.0\WindowsForms.Console.dll" />
+    <file src="src\WindowsForms.Console\bin\net5.0\WindowsForms.Console.deps.json" target="lib\net5.0\WindowsForms.Console.deps.json" />
+    <file src="src\WindowsForms.Console\bin\net5.0\WindowsForms.Console.pdb" target="lib\net5.0\WindowsForms.Console.pdb" />
 
     </files>
 </package>

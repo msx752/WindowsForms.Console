@@ -5,18 +5,28 @@
     <TargetFrameworks>net45;netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.0.0.0</Version>
+    <Version>2.0.0.10</Version>
     <Authors>Mustafa Salih ASLIM</Authors>
-    <PackageReleaseNotes>FConsole, WinConsole, Console, WindowsForms.Console, Component, WinFormConsole</PackageReleaseNotes>
+    <PackageReleaseNotes>supports .NET 5 RC1</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/msx752/WindowsForms.Console</PackageProjectUrl>
     <RepositoryUrl>https://github.com/msx752/WindowsForms.Console</RepositoryUrl>
-    <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageId>WindowsForms.Console</PackageId>
+    <Description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application.</Description>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageTags>FConsole WindowsForms.Console WinConsole Console Component WinFormConsole</PackageTags>
+    <PackageIcon>wfc.png</PackageIcon>
 
+
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
-
+	
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +34,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md">
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\wfc.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
