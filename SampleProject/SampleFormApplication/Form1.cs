@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsForm.Console.Extensions;
+using WindowsForms.Console.Extensions;
 
 namespace SampleFormApplication
 {
@@ -67,7 +67,7 @@ namespace SampleFormApplication
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.WriteLine(" http://github.com/msx752/WindowsForm.Console",
+            this.WriteLine(" http://github.com/msx752/WindowsForms.Console",
             Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()), cmbTimeTag.SelectedIndex == 1);//used SelectedIndex for preventing a crash)
         }
 

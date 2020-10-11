@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsForm.Console.Extensions
+namespace WindowsForms.Console.Extensions
 {
     /// <summary>
     /// for easy access to properties of FConsole 

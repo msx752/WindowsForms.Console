@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsForm.Console.Enums;
+using WindowsForms.Console.Enums;
 
-namespace WindowsForm.Console
+namespace WindowsForms.Console
 {
     /// <summary>
     /// new Console GUI 

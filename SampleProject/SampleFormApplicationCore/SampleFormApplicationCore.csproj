@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>SampleFormApplication</RootNamespace>
   </PropertyGroup>
@@ -48,7 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\SampleFormApplication\Properties\Settings.settings" Link="Properties\Settings.settings" />
+    <None Include="..\SampleFormApplication\Properties\Settings.settings" Link="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

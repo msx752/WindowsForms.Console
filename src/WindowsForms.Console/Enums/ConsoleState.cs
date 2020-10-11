@@ -1,4 +1,4 @@
-﻿namespace WindowsForm.Console.Enums
+﻿namespace WindowsForms.Console.Enums
 {
     /// <summary>
     /// state controller of FConsole 

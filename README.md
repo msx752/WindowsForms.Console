@@ -1,15 +1,15 @@
-[![nuget](https://img.shields.io/badge/Nuget-WindowsForm.Console-brightgreen.svg?maxAge=259200)](https://www.nuget.org/packages/WindowsForm.Console)
-[![NuGet](https://img.shields.io/nuget/v/WindowsForm.Console.svg)](https://www.nuget.org/packages/WindowsForm.Console)
+[![nuget](https://img.shields.io/badge/Nuget-WindowsForms.Console-brightgreen.svg?maxAge=259200)](https://www.nuget.org/packages/WindowsForms.Console)
+[![NuGet](https://img.shields.io/nuget/v/WindowsForms.Console.svg)](https://www.nuget.org/packages/WindowsForms.Console)
 [![Build status](https://ci.appveyor.com/api/projects/status/enn19h5tkvhy2w95?svg=true)](https://ci.appveyor.com/project/msx752/windowsform-console)
 
-# WindowsForm.Console
+# WindowsForms.Console
 Component of WindowsForm
 
 # Usage
 - import nuget package to the project
 
 ```
-        Install-Package WindowsForm.Console
+        Install-Package WindowsForms.Console
 ```
 - initial code for any Form which has FConsole component
 ```c#
@@ -21,7 +21,7 @@ Component of WindowsForm
 ```
 - add 'FConsole' component to FormControl ([you can see how to](https://stackoverflow.com/questions/2101171/how-to-add-user-control-in-the-toolbox-for-c-net-for-winforms-by-importing-the))
 
-- look at sample project [(for more example)](https://github.com/msx752/WindowsForm.Console/tree/master/SampleProject/SampleFormApplication)
+- look at sample project [(for more example)](https://github.com/msx752/WindowsForms.Console/tree/master/SampleProject/SampleFormApplicationCore)
 
 - example codes
 ```c#
@@ -47,12 +47,14 @@ Component of WindowsForm
        //or
        var line = await this.ReadKey();//(extension method)
 ```
-![FConsole](https://raw.githubusercontent.com/msx752/WindowsForm.Console/master/example1.png)
+![FConsole](https://raw.githubusercontent.com/msx752/WindowsForms.Console/master/example1.png)
 
 # Supported Platforms
 - [x] WindowsForm Application
 - v4.5 to 4.6.2 (v4.7 temporarily not supported)
 - .Net Core 3.0
+- .Net Core 3.1
+- .Net 5 RC1
 - [ ] WPF (not supported yet)
 
 # Dependencies

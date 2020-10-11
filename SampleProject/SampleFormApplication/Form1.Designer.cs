@@ -1,5 +1,5 @@
 ﻿
-using WindowsForm.Console.Enums;
+using WindowsForms.Console.Enums;
 
 namespace SampleFormApplication
 {
@@ -42,7 +42,7 @@ namespace SampleFormApplication
             this.btnAsyncWriteLine = new System.Windows.Forms.Button();
             this.btnAsyncWrite = new System.Windows.Forms.Button();
             this.btnClearAll = new System.Windows.Forms.Button();
-            this.fconsole1 = new WindowsForm.Console.FConsole();
+            this.fconsole1 = new WindowsForms.Console.FConsole();
             this.cmbTimeTag = new System.Windows.Forms.ComboBox();
             this.btnReadKeyColored = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -173,7 +173,7 @@ namespace SampleFormApplication
             this.fconsole1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.fconsole1.SecureReadLine = true;
             this.fconsole1.Size = new System.Drawing.Size(866, 306);
-            this.fconsole1.State = WindowsForm.Console.Enums.ConsoleState.Writing;
+            this.fconsole1.State = WindowsForms.Console.Enums.ConsoleState.Writing;
             this.fconsole1.TabIndex = 3;
             this.fconsole1.Text = "WindowsForm Console";
             this.fconsole1.Title = "Form1";
@@ -228,7 +228,7 @@ namespace SampleFormApplication
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ComboBox comboBox1;
-        private WindowsForm.Console.FConsole fconsole1;
+        private WindowsForms.Console.FConsole fconsole1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
