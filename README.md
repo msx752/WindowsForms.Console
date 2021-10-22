@@ -51,15 +51,20 @@ Component of WindowsForm
 
 # Supported Platforms
 - [x] WindowsForm Application
-- v4.5 to 4.6.2 (v4.7 temporarily not supported)
+- v4.5
+- v4.5.2
+- v4.6
+- v4.7.2
 - .Net Core 3.0
 - .Net Core 3.1
-- .Net 5 RC1
+- .Net 5.0
 - [ ] WPF (not supported yet)
 
 # Dependencies
 - System.Windows.Form
 - System
+# FrameworkReferences for the .NetCore and upper
+- Microsoft.WindowsDesktop.App.WindowsForm
 
 # Example Project
 - component is used in [MSniper Project](https://github.com/msx752/MSniper)
