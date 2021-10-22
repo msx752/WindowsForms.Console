@@ -43,7 +43,6 @@ namespace WindowsForms.Console
         private void FConsole_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && InputEnable)
-
                 MultiplePaste();
             else if (!InputEnable)
                 Select(Text.Length, 0);
@@ -312,9 +311,8 @@ namespace WindowsForms.Console
         public async Task<char> ReadKey(Color? color = null)
         {
             if (State == ConsoleState.ReadKey)
-            {
                 InputEnable = false;
-            }
+
             Color Color = ForeColor;
             if (color.HasValue)
                 Color = color.Value;
@@ -348,26 +346,26 @@ namespace WindowsForms.Console
         public async Task<string> ReadLine()
         {
             return await Task.Run(() =>
-              {
-                  lock (_lockReadLine)
-                  {
-                      var recentReadState = ReadOnly;
-                      CurrentLine = "";
-                      ReadPoint = TextLength;
-                      InputEnable = true;
-                      ReadOnly = false;
-                      State = ConsoleState.ReadLine;
-                      while (InputEnable)
-                          Thread.Sleep(1);//needs improvement
-                      Cursor = Cursors.IBeam;
-                      if (SecureReadLine)
-                          ReadOnly = true;
-                      else
-                          ReadOnly = recentReadState;
-                      State = ConsoleState.Writing;
-                      return CurrentLine;
-                  }
-              });
+            {
+                lock (_lockReadLine)
+                {
+                    var recentReadState = ReadOnly;
+                    CurrentLine = "";
+                    ReadPoint = TextLength;
+                    InputEnable = true;
+                    ReadOnly = false;
+                    State = ConsoleState.ReadLine;
+                    while (InputEnable)
+                        Thread.Sleep(1);//needs improvement
+                    Cursor = Cursors.IBeam;
+                    if (SecureReadLine)
+                        ReadOnly = true;
+                    else
+                        ReadOnly = recentReadState;
+                    State = ConsoleState.Writing;
+                    return CurrentLine;
+                }
+            });
         }
 
         private object _lockLines = new object();
