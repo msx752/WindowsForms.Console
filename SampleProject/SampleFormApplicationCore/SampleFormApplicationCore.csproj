@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>SampleFormApplication</RootNamespace>
   </PropertyGroup>
@@ -60,5 +60,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\WindowsForms.Console\WindowsForms.Console.csproj" />
   </ItemGroup>
-
 </Project>

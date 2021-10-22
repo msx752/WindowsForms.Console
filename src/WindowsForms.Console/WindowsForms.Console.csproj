@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net45;netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net45;net452;net46;net472;netcoreapp3.0;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>2.0.0.10</Version>
     <Authors>Mustafa Salih ASLIM</Authors>
-    <PackageReleaseNotes>supports .NET 5 RC1</PackageReleaseNotes>
+    <PackageReleaseNotes>supports .NET 5</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/msx752/WindowsForms.Console</PackageProjectUrl>
     <RepositoryUrl>https://github.com/msx752/WindowsForms.Console</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -17,14 +17,13 @@
     <PackageTags>FConsole WindowsForms.Console WinConsole Console Component WinFormConsole</PackageTags>
     <PackageIcon>wfc.png</PackageIcon>
 
-
     <IsPackable>true</IsPackable>
   </PropertyGroup>
-	
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
-	
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -43,5 +42,4 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
 </Project>

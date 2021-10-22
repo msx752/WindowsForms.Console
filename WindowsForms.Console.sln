@@ -14,7 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC85158C-7E14-44E2-BB49-CCB70B7DAFFE}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
-		appveyor.yml = appveyor.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
