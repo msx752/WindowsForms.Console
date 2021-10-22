@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsForms.Console.Extensions;
@@ -92,8 +88,7 @@ namespace SampleFormApplication
         {
             fconsole1.Clear();
             int counter = 1;
-            this.WriteLine($"[Minimum Number:\t1\t]",
-                Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
+            this.WriteLine($"[Minimum Number:\t1\t]", Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
             List<Task> tlist = new List<Task>();
             for (int i = 0; i < 7; i++)
             {
@@ -102,8 +97,7 @@ namespace SampleFormApplication
                 counter++;
                 tlist.Add(Task.Run(() =>
                 {
-                    this.WriteLine($"\t[Number:\t{count}\t]",
-                        Color.FromName(comboBox1.Items[current].ToString()), cmbTimeTag.SelectedIndex == 1);////used SelectedIndex for preventing a crash
+                    this.WriteLine($"\t[Number:\t{count}\t]", Color.FromName(comboBox1.Items[current].ToString()), cmbTimeTag.SelectedIndex == 1);////used SelectedIndex for preventing a crash
                 }));
             }
             for (int i = 0; i < 7; i++)
@@ -113,34 +107,29 @@ namespace SampleFormApplication
                 counter++;
                 tlist.Add(Task.Run(() =>
                 {
-                    this.WriteLine($"\t[Number:\t{count}\t]",
-                        Color.FromName(comboBox1.Items[current].ToString()), cmbTimeTag.SelectedIndex == 1);////used SelectedIndex for preventing a crash
+                    this.WriteLine($"\t[Number:\t{count}\t]", Color.FromName(comboBox1.Items[current].ToString()), cmbTimeTag.SelectedIndex == 1);////used SelectedIndex for preventing a crash
                 }));
             }
             Task.WaitAll(tlist.ToArray());// if you dont do this, writeline squence may be unstable
-            this.WriteLine($"[Maximum Number:\t14\t]",
-                Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
+            this.WriteLine($"[Maximum Number:\t14\t]", Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
         }
 
         private void btnAsyncWrite_Click_1(object sender, EventArgs e)
         {
             fconsole1.Clear();
             List<Task> tlist = new List<Task>();
-            this.WriteLine($"[Minimum Number:\t1\t]",
-                Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
+            this.WriteLine($"[Minimum Number:\t1\t]", Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
             for (int i = 0; i < 7; i++)
             {
                 int current = i;
                 tlist.Add(Task.Run(() =>
                 {
-                    this.Write($"{current + 1}\t",
-                        Color.FromName(comboBox1.Items[current].ToString()));////used SelectedIndex for preventing a crash
+                    this.Write($"{current + 1}\t", Color.FromName(comboBox1.Items[current].ToString()));////used SelectedIndex for preventing a crash
                 }));
             }
             Task.WaitAll(tlist.ToArray());// if you dont do this, writeline squence may be unstable
             this.WriteLine();
-            this.WriteLine($"[Maximum Number:\t7\t]",
-                Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
+            this.WriteLine($"[Maximum Number:\t7\t]", Color.FromName(comboBox1.Items[0].ToString()), cmbTimeTag.SelectedIndex == 1);
         }
 
         private void btnClearAll_Click(object sender, EventArgs e)

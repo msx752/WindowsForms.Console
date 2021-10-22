@@ -1,7 +1,7 @@
 ﻿namespace WindowsForms.Console.Enums
 {
     /// <summary>
-    /// state controller of FConsole 
+    /// state controller of FConsole
     /// </summary>
     public enum ConsoleState
     {

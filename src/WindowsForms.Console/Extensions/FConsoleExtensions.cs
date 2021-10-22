@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsForms.Console.Extensions
 {
     /// <summary>
-    /// for easy access to properties of FConsole 
+    /// for easy access to properties of FConsole
     /// </summary>
     public static class FConsoleExtensions
     {
         /// <summary>
-        /// extension of read key 
+        /// extension of read key
         /// </summary>
         /// <returns>
         /// </returns>
@@ -26,7 +25,7 @@ namespace WindowsForms.Console.Extensions
         }
 
         /// <summary>
-        /// extension of readline 
+        /// extension of readline
         /// </summary>
         /// <returns>
         /// </returns>
@@ -38,7 +37,7 @@ namespace WindowsForms.Console.Extensions
         }
 
         /// <summary>
-        /// extension of writeline function 
+        /// extension of writeline function
         /// </summary>
         /// <param name="f">
         /// </param>
@@ -47,7 +46,7 @@ namespace WindowsForms.Console.Extensions
         /// <param name="color">
         /// </param>
         /// <param name="showTimeTag">
-        /// shows time on output 
+        /// shows time on output
         /// </param>
         public static void WriteLine(this Form f, string message = null, Color? color = null, bool showTimeTag = false)
         {
@@ -57,7 +56,7 @@ namespace WindowsForms.Console.Extensions
         }
 
         /// <summary>
-        /// extension of write function 
+        /// extension of write function
         /// </summary>
         /// <param name="f">
         /// </param>
@@ -83,14 +82,14 @@ namespace WindowsForms.Console.Extensions
         }
 
         /// <summary>
-        /// finds all specific type of controls 
+        /// finds all specific type of controls
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="mainControl">
         /// </param>
         /// <param name="getAllChild">
-        /// search at child 
+        /// search at child
         /// </param>
         /// <returns>
         /// </returns>
@@ -100,8 +99,10 @@ namespace WindowsForms.Console.Extensions
             List<T> lt = new List<T>();
             for (int i = 0; i < mainControl.Controls.Count; i++)
             {
-                if (mainControl.Controls[i] is T) lt.Add((T)mainControl.Controls[i]);
-                if (getAllChild) lt.AddRange(FindControlByType<T>(mainControl.Controls[i], getAllChild));
+                if (mainControl.Controls[i] is T)
+                    lt.Add((T)mainControl.Controls[i]);
+                if (getAllChild)
+                    lt.AddRange(FindControlByType<T>(mainControl.Controls[i], getAllChild));
             }
             return lt;
         }

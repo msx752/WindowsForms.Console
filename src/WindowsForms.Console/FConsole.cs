@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +11,7 @@ using WindowsForms.Console.Enums;
 namespace WindowsForms.Console
 {
     /// <summary>
-    /// new Console GUI 
+    /// new Console GUI
     /// </summary>
     public class FConsole : RichTextBox
     {
@@ -32,7 +31,7 @@ namespace WindowsForms.Console
         private void FConsole_MouseUp(object sender, MouseEventArgs e)
         {
             if (!InputEnable)
-            { Select(Text.Length, 0); }
+                Select(Text.Length, 0);
         }
 
         private void FConsole_MouseMove(object sender, MouseEventArgs e)
@@ -44,60 +43,70 @@ namespace WindowsForms.Console
         private void FConsole_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && InputEnable)
-            {
+
                 MultiplePaste();
-            }
-            else
-            {
-                if (!InputEnable)
-                    Select(Text.Length, 0);
-            }
+            else if (!InputEnable)
+                Select(Text.Length, 0);
         }
 
         /// <summary>
-        /// parameters 
+        /// parameters
         /// </summary>
         public string[] Arguments { get; set; }
 
         /// <summary>
-        /// link color 
+        /// link color
         /// </summary>
         public Color HyperlinkColor { get; set; }
 
         /// <summary>
-        /// states of console 
+        /// states of console
         /// </summary>
         public ConsoleState State { get; set; }
 
         /// <summary>
-        /// after calling readline method sets ReadOnly= true (default:true) 
+        /// after calling readline method sets ReadOnly= true (default:true)
         /// </summary>
         public bool SecureReadLine { get; set; }
 
         /// <summary>
-        /// auto scrolling to end when adds newLine (default:true) 
+        /// auto scrolling to end when adds newLine (default:true)
         /// </summary>
         public bool AutoScrollToEndLine { get; set; }
 
         /// <summary>
-        /// console title (not necessary :) ) 
+        /// console title (not necessary :) )
         /// </summary>
-        public string Title { get { if (Parent != null) return Parent.Text; else return ""; } set { if (Parent != null) Parent.Text = value; } }
+        public string Title
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.Text;
+                else
+                    return "";
+            }
+            set
+            {
+                if (Parent != null)
+                    Parent.Text = value;
+            }
+        }
 
         /// <summary>
-        /// catch one char from console 
+        /// catch one char from console
         /// </summary>
         private char CurrentKey { get; set; }
 
         /// <summary>
-        /// catch all chars in line from console 
+        /// catch all chars in line from console
         /// </summary>
         private string CurrentLine { get; set; }
 
         private int ReadPoint { get; set; }
 
         /// <summary>
-        /// recent list of console 
+        /// recent list of console
         /// </summary>
         private List<string> recentlist { get; set; }
 
@@ -106,7 +115,7 @@ namespace WindowsForms.Console
         private object _lockInputEnable = new object();
 
         /// <summary>
-        /// read mode checker 
+        /// read mode checker
         /// </summary>
         private bool InputEnable
         {
@@ -125,7 +134,7 @@ namespace WindowsForms.Console
         private object _lockPause = new object();
 
         /// <summary>
-        /// console pause checker 
+        /// console pause checker
         /// </summary>
         private bool Pause
         {
@@ -142,7 +151,7 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// Initialize Console 
+        /// Initialize Console
         /// </summary>
         public void InitializeFConsole()
         {
@@ -211,7 +220,7 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// default console key events 
+        /// default console key events
         /// </summary>
         /// <param name="sender">
         /// </param>
@@ -284,7 +293,7 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// mouse right click event 
+        /// mouse right click event
         /// </summary>
         private void MultiplePaste()
         {
@@ -296,7 +305,7 @@ namespace WindowsForms.Console
         private object _lockReadKey = new object();
 
         /// <summary>
-        /// stop line 
+        /// stop line
         /// </summary>
         /// <returns>
         /// </returns>
@@ -332,7 +341,7 @@ namespace WindowsForms.Console
         private object _lockReadLine = new object();
 
         /// <summary>
-        /// read line 
+        /// read line
         /// </summary>
         /// <returns>
         /// </returns>
@@ -368,14 +377,12 @@ namespace WindowsForms.Console
             get
             {
                 lock (_lockLines)
-                {
                     return Lines;
-                }
             }
         }
 
         /// <summary>
-        /// last line gets 
+        /// last line gets
         /// </summary>
         public void SelectLastLine()
         {
@@ -389,7 +396,7 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// updates selected line 
+        /// updates selected line
         /// </summary>
         /// <param name="line">
         /// </param>
@@ -410,14 +417,14 @@ namespace WindowsForms.Console
         private bool _inputEnable;
 
         /// <summary>
-        /// write function 
+        /// write function
         /// </summary>
         /// <param name="message">
         /// </param>
         /// <param name="color">
         /// </param>
         /// <param name="showTimeTag">
-        /// shows time on output 
+        /// shows time on output
         /// </param>
         public void Write(string message, Color? color = null, bool showTimeTag = false)
         {
@@ -427,10 +434,7 @@ namespace WindowsForms.Console
                 {
                     var recentReadState = ReadOnly;
                     Select(TextLength, 0);
-                    if (!message.EndsWith(Environment.NewLine) ||
-                    State == ConsoleState.ReadLine ||
-                    State == ConsoleState.ReadKey ||
-                    message == "\r\n")
+                    if (!message.EndsWith(Environment.NewLine) || State == ConsoleState.ReadLine || State == ConsoleState.ReadKey || message == "\r\n")
                         showTimeTag = false;
                     if (showTimeTag)
                         message = $"{DateTime.Now}: {message}";
@@ -457,12 +461,12 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// stored last used color on console 
+        /// stored last used color on console
         /// </summary>
         public Color LastUsedColor { get; private set; }
 
         /// <summary>
-        /// writeline function 
+        /// writeline function
         /// </summary>
         /// <param name="message">
         /// </param>
@@ -474,7 +478,7 @@ namespace WindowsForms.Console
         }
 
         /// <summary>
-        /// link click router 
+        /// link click router
         /// </summary>
         /// <param name="sender">
         /// </param>
