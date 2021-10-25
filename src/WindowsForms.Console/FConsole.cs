@@ -16,6 +16,7 @@ namespace WindowsForms.Console
     public class FConsole : RichTextBox
     {
         private bool _pause;
+        private AutoResetEvent autoResetEventInputEnable = new AutoResetEvent(false);
 
         public FConsole()
         {
@@ -126,7 +127,12 @@ namespace WindowsForms.Console
             set
             {
                 lock (_lockInputEnable)
-                    _inputEnable = value;
+                {
+                    if ((_inputEnable = value))
+                        autoResetEventInputEnable.Reset();
+                    else
+                        autoResetEventInputEnable.Set();
+                }
             }
         }
 
@@ -325,8 +331,7 @@ namespace WindowsForms.Console
                 InputEnable = true;
                 ReadOnly = false;
                 State = ConsoleState.ReadKey;
-                while (InputEnable)
-                    Thread.Sleep(1); //needs improvement
+                autoResetEventInputEnable.WaitOne();
                 if (SecureReadLine)
                     ReadOnly = true;
                 else
@@ -355,8 +360,7 @@ namespace WindowsForms.Console
                     InputEnable = true;
                     ReadOnly = false;
                     State = ConsoleState.ReadLine;
-                    while (InputEnable)
-                        Thread.Sleep(1);//needs improvement
+                    autoResetEventInputEnable.WaitOne();
                     Cursor = Cursors.IBeam;
                     if (SecureReadLine)
                         ReadOnly = true;
