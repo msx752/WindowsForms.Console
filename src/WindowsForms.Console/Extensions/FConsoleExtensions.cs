@@ -74,10 +74,11 @@ namespace WindowsForms.Console.Extensions
         private static FConsole CheckFConsole(Form f)
         {
             var fconsoles = FindControlByType<FConsole>(f, true);
-            if (fconsoles.Count == 0)
+            var count = fconsoles.Count();
+            if (count == 0)
                 throw new Exception("this WinForm does not have any FConsole component");
-            else if (fconsoles.Count > 1)
-                throw new Exception("conflict occurs, more than one FConsole components detected.(supported only one component on Form)");
+            else if (count > 1)
+                throw new NotSupportedException("conflict occured while deciding to select FConsole component, more than one FConsole components detected in the one Form, please help for the improvement. Supported only one component at the same Form");
             return fconsoles.First();
         }
 
@@ -94,17 +95,16 @@ namespace WindowsForms.Console.Extensions
         /// <returns>
         /// </returns>
         /// https://stackoverflow.com/questions/4630391/get-all-controls-of-a-specific-type
-        private static List<T> FindControlByType<T>(Control mainControl, bool getAllChild = false) where T : Control
+        private static IEnumerable<T> FindControlByType<T>(Control mainControl, bool getAllChild = false) where T : Control
         {
-            List<T> lt = new List<T>();
-            for (int i = 0; i < mainControl.Controls.Count; i++)
+            foreach (Control ctl in mainControl.Controls)
             {
-                if (mainControl.Controls[i] is T)
-                    lt.Add((T)mainControl.Controls[i]);
+                if (ctl is T)
+                    yield return (T)ctl;
                 if (getAllChild)
-                    lt.AddRange(FindControlByType<T>(mainControl.Controls[i], getAllChild));
+                    foreach (var childCtl in FindControlByType<T>(ctl, getAllChild))
+                        yield return childCtl;
             }
-            return lt;
         }
     }
 }
