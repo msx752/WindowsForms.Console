@@ -12,7 +12,6 @@ namespace SampleFormApplication
         public Form1()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false;//this is important for async threading
         }
 
         private void button1_Click(object sender, EventArgs e)

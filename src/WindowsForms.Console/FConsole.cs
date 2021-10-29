@@ -27,6 +27,7 @@ namespace WindowsForms.Console
             MouseMove += FConsole_MouseMove;
             MouseUp += FConsole_MouseUp;
             InitializeFConsole();
+            Form.CheckForIllegalCrossThreadCalls = false;//this is important to the async access for multi-threading
         }
 
         private void FConsole_MouseUp(object sender, MouseEventArgs e)
