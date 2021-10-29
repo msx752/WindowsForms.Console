@@ -11,14 +11,6 @@ Component of WindowsForm
 ```
         Install-Package WindowsForms.Console
 ```
-- initial code for any Form which has FConsole component
-```c#
-        public Form1()
-        {
-            InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false; // <=== this is important for async access to thread
-        }
-```
 - add 'FConsole' component to FormControl ([you can see how to](https://stackoverflow.com/questions/2101171/how-to-add-user-control-in-the-toolbox-for-c-net-for-winforms-by-importing-the))
 
 - look at sample project [(for more example)](https://github.com/msx752/WindowsForms.Console/tree/master/SampleProject/SampleFormApplicationCore)
