@@ -15,8 +15,10 @@ namespace WindowsForms.Console
     /// </summary>
     public class FConsole : RichTextBox
     {
+        private const string _press_any_key_text = " Press Any Key...";
         private bool _pause;
         private AutoResetEvent autoResetEventInputEnable = new AutoResetEvent(false);
+        private QueueTask _writeLineQueue = null;
 
         public FConsole()
         {
@@ -34,6 +36,12 @@ namespace WindowsForms.Console
         {
             if (!InputEnable)
                 Select(Text.Length, 0);
+        }
+
+        public new void Clear()
+        {
+            base.Clear();
+            recentlist.Clear();
         }
 
         private void FConsole_MouseMove(object sender, MouseEventArgs e)
@@ -187,6 +195,8 @@ namespace WindowsForms.Console
             AutoScrollToEndLine = true;
             State = ConsoleState.Writing;
             LastUsedColor = SelectionColor;
+            MaxLength = 32767;
+            _writeLineQueue = new QueueTask(this);
         }
 
         public string RecentUndo()
@@ -319,11 +329,11 @@ namespace WindowsForms.Console
         {
             if (State == ConsoleState.ReadKey)
                 InputEnable = false;
-
+            State = ConsoleState.Writing;
             Color Color = ForeColor;
             if (color.HasValue)
                 Color = color.Value;
-            WriteLine(" Press Any Key...", Color);
+            WriteLine(_press_any_key_text, Color);
             return await Task.Run(() =>
             {
                 var recentReadState = ReadOnly;
@@ -431,28 +441,33 @@ namespace WindowsForms.Console
         /// </param>
         public void Write(string message, Color? color = null, bool showTimeTag = false)
         {
-            Task.Run(() =>
-            {
-                lock (_lockWrite)
-                {
-                    var recentReadState = ReadOnly;
-                    Select(TextLength, 0);
-                    if (!message.EndsWith(Environment.NewLine) || State == ConsoleState.ReadLine || State == ConsoleState.ReadKey || message == "\r\n")
-                        showTimeTag = false;
-                    if (showTimeTag)
-                        message = $"{DateTime.Now}: {message}";
+            _writeLineQueue.Enqueue(new QueueTaskObject(message, color, showTimeTag));
+        }
 
-                    SetText(message, color);
-                    DeselectAll();
-                    if (AutoScrollToEndLine)
-                        this.ScrollToCaret();
-                    if (SecureReadLine)
-                        ReadOnly = true;
-                    else
-                        ReadOnly = recentReadState;
-                    State = ConsoleState.Writing;
-                }
-            }).Wait();
+        internal bool OriginalWrite(string message, Color? color = null, bool showTimeTag = false)
+        {
+            if ((message.Length == _press_any_key_text.Length && !_press_any_key_text.Equals(message.Replace(Environment.NewLine, ""))) && State == ConsoleState.ReadKey)
+                return false;
+            if (this.IsDisposed)
+                return false;
+
+            var recentReadState = ReadOnly;
+            Select(TextLength, 0);
+            if (!message.EndsWith(Environment.NewLine) || State == ConsoleState.ReadLine || State == ConsoleState.ReadKey || message == Environment.NewLine)
+                showTimeTag = false;
+            if (showTimeTag)
+                message = $"{DateTime.Now}: {message}";
+
+            SetText(message, color);
+            DeselectAll();
+            if (AutoScrollToEndLine)
+                this.ScrollToCaret();
+            if (SecureReadLine)
+                ReadOnly = true;
+            else
+                ReadOnly = recentReadState;
+            //State = ConsoleState.Writing;
+            return true;
         }
 
         public void SetText(string message, Color? color = null)
@@ -513,6 +528,12 @@ namespace WindowsForms.Console
             //}
             //if (update)
             //    SelectLastLine();
+        }
+
+        public new void Dispose(bool disposing)
+        {
+            _writeLineQueue.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

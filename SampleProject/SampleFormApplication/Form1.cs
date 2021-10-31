@@ -141,5 +141,25 @@ namespace SampleFormApplication
             var key = await this.ReadKey(Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()));
             MessageBox.Show($"Value of ReadKey is '{key}'");
         }
+
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+            Action<int, int> action = (taskNumber, index) => this.WriteLine($"TaskNumber:\t{taskNumber}\tIndex:{index}", Color.FromName(comboBox1.Items[comboBox1.SelectedIndex].ToString()), true);
+            List<Task> taskList = new List<Task>();
+            this.WriteLine("un-ordered TaskNumber and indexes have been produced but note that there is no slip on TimeTagging", Color.Red, true);
+            for (int t = 1; t <= 5; t++)
+            {
+                int tn = t;
+                taskList.Add(Task.Run(() =>
+                {
+                    for (int n = 1; n <= 50; n++)
+                    {
+                        int nn = n;
+                        taskList.Add(Task.Run(() => action(tn, nn)));
+                    }
+                }));
+            }
+            Task.WaitAll(taskList.ToArray());
+        }
     }
 }
