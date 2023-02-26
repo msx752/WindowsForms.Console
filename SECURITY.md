@@ -7,6 +7,7 @@ currently being supported with security updates.
 
 | Version          | Supported          |
 | ---------------- | ------------------ |
+| WPF              | :x:                |
 | < net48          | :x:                |
 | net48            | :white_check_mark: |
 | netcoreapp3.0    | :white_check_mark: |
