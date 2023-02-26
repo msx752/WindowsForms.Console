@@ -42,15 +42,7 @@ Component of WindowsForm
 ![FConsole](https://raw.githubusercontent.com/msx752/WindowsForms.Console/master/example1.png)
 
 # Supported Platforms
-- [x] WindowsForm Application
-- v4.5
-- v4.5.2
-- v4.6
-- v4.7.2
-- .Net Core 3.0
-- .Net Core 3.1
-- .Net 5.0
-- [ ] WPF (not supported yet)
+[moved to security.md](https://github.com/msx752/WindowsForms.Console/blob/master/SECURITY.md)
 
 # Dependencies
 - System.Windows.Form
