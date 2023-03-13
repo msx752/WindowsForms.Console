@@ -20,8 +20,8 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<Version>3.0.0</Version>
-		<AssemblyVersion>3.0.0</AssemblyVersion>
+		<Version>3.0.1</Version>
+		<AssemblyVersion>3.0.1</AssemblyVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<id>WindowsForms.Console</id>
 		<Title>WindowsForms.Console</Title>

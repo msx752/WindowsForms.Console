@@ -325,7 +325,7 @@ namespace WindowsForms.Console
         /// </summary>
         /// <returns>
         /// </returns>
-        public async Task<char> ReadKey(Color? color = null)
+        public Task<char> ReadKey(Color? color = null, CancellationToken cancellationToken = default)
         {
             if (State == ConsoleState.ReadKey)
                 InputEnable = false;
@@ -334,7 +334,7 @@ namespace WindowsForms.Console
             if (color.HasValue)
                 Color = color.Value;
             WriteLine(_press_any_key_text, Color);
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var recentReadState = ReadOnly;
                 CurrentKey = ' ';
@@ -349,7 +349,7 @@ namespace WindowsForms.Console
                     ReadOnly = recentReadState;
                 State = ConsoleState.Writing;
                 return CurrentKey;
-            });
+            }, cancellationToken);
         }
 
         private object _lockReadLine = new object();
@@ -359,9 +359,9 @@ namespace WindowsForms.Console
         /// </summary>
         /// <returns>
         /// </returns>
-        public async Task<string> ReadLine()
+        public Task<string> ReadLine(CancellationToken cancellationToken = default)
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 lock (_lockReadLine)
                 {
@@ -380,7 +380,7 @@ namespace WindowsForms.Console
                     State = ConsoleState.Writing;
                     return CurrentLine;
                 }
-            });
+            }, cancellationToken);
         }
 
         private object _lockLines = new object();
@@ -534,6 +534,8 @@ namespace WindowsForms.Console
         {
             _writeLineQueue.Dispose();
             base.Dispose(disposing);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

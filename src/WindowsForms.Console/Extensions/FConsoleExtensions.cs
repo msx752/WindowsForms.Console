@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,11 +18,10 @@ namespace WindowsForms.Console.Extensions
         /// </summary>
         /// <returns>
         /// </returns>
-        public static async Task<char> ReadKey(this Form f, Color? color = null)
+        public static Task<char> ReadKey(this Form f, Color? color = null, CancellationToken cancellationToken = default)
         {
             FConsole console = CheckFConsole(f);
-            var line = await console.ReadKey(color);
-            return line;
+            return console.ReadKey(color, cancellationToken);
         }
 
         /// <summary>
@@ -29,11 +29,10 @@ namespace WindowsForms.Console.Extensions
         /// </summary>
         /// <returns>
         /// </returns>
-        public static async Task<string> ReadLine(this Form f)
+        public static Task<string> ReadLine(this Form f, CancellationToken cancellationToken = default)
         {
             FConsole console = CheckFConsole(f);
-            var line = await console.ReadLine();
-            return line;
+            return console.ReadLine(cancellationToken);
         }
 
         /// <summary>
