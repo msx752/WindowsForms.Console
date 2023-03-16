@@ -1,100 +1,98 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace WindowsForms.Console;
 
-namespace WindowsForms.Console
+internal class QueueTaskObject
 {
-    internal class QueueTaskObject
+    public QueueTaskObject(string message, Color? color, bool showTimeTag)
     {
-        public QueueTaskObject(string message, Color? color, bool showTimeTag)
-        {
-            this.message = message;
-            this.color = color;
-            this.showTimeTag = showTimeTag;
-        }
-
-        public string message { get; set; }
-        public Color? color { get; set; }
-        public bool showTimeTag { get; set; }
+        this.message = message;
+        this.color = color;
+        this.showTimeTag = showTimeTag;
     }
 
-    internal class QueueTask : IDisposable
-    {
-        private bool disposedValue;
-        private ConcurrentQueue<QueueTaskObject> tasks;
-        private readonly FConsole fConsole;
-        private readonly CancellationTokenSource cancellationTokenSource;
+    public Color? color { get; set; }
+    public string message { get; set; }
+    public bool showTimeTag { get; set; }
+}
 
-        public QueueTask(FConsole fConsole)
+internal class QueueTask : IDisposable
+{
+    private readonly Task backgroundTask;
+    private readonly CancellationTokenSource cancellationTokenSource;
+    private readonly FConsole fConsole;
+    private bool disposedValue;
+    private ConcurrentQueue<QueueTaskObject> tasks;
+
+    public QueueTask(FConsole fConsole)
+    {
+        this.cancellationTokenSource = new CancellationTokenSource();
+        this.tasks = new ConcurrentQueue<QueueTaskObject>();
+        this.fConsole = fConsole;
+        this.backgroundTask = Task.Factory.StartNew(async () =>
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            tasks = new ConcurrentQueue<QueueTaskObject>();
-            this.fConsole = fConsole;
-            Task.Factory.StartNew(() =>
+            try
+            {
+                while (!disposedValue)
+                {
+                    this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    if (this.tasks.Count > 0)
+                    {
+                        if (this.tasks.TryPeek(out QueueTaskObject task))
+                        {
+                            if (this.fConsole.OriginalWrite(task.message, task.color, task.showTimeTag))
+                                this.tasks.TryDequeue(out QueueTaskObject r);
+                        }
+                    }
+
+                    await Task.Delay(2, this.cancellationTokenSource.Token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            catch (Exception)
+            {
+            }
+        }, cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+    }
+
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    internal void Enqueue(QueueTaskObject task)
+    {
+        this.tasks.Enqueue(task);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposedValue)
+        {
+            if (disposing)
             {
                 try
                 {
-                    while (!disposedValue)
-                    {
-                        cancellationTokenSource.Token.ThrowIfCancellationRequested();
-                        if (tasks.Count > 0)
-                        {
-                            if (tasks.TryPeek(out QueueTaskObject task))
-                            {
-                                if (this.fConsole.OriginalWrite(task.message, task.color, task.showTimeTag))
-                                    tasks.TryDequeue(out QueueTaskObject r);
-                            }
-                        }
-                        Task.Delay(2).Wait();
-                    }
+                    this.cancellationTokenSource.Cancel(true);
                 }
-                catch (OperationCanceledException)
+                catch { }
+                try
                 {
+                    this.backgroundTask.Dispose();
                 }
-                catch (Exception)
+                catch { }
+                try
                 {
+#if !NET48
+                    this.tasks.Clear();
+#endif
                 }
-            }, cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        internal void Enqueue(QueueTaskObject task)
-        {
-            tasks.Enqueue(task);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    cancellationTokenSource.Cancel(true);
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-                tasks = null;
+                catch { }
             }
-        }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~QueueTask()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+            this.disposedValue = true;
+            this.tasks = null;
+        }
     }
 }
