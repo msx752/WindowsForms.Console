@@ -21,8 +21,8 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<Version>3.0.1</Version>
-		<AssemblyVersion>3.0.1</AssemblyVersion>
+		<Version>3.0.2</Version>
+		<AssemblyVersion>3.0.2</AssemblyVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<id>WindowsForms.Console</id>
 		<Title>WindowsForms.Console</Title>
@@ -46,7 +46,7 @@
 		<ContinuousIntegrationBuild>True</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>True</EmbedUntrackedSources>
 		<Copyright>Copyright 2017</Copyright>
-		<PackageReleaseNotes>net5-windows, net6-windows .net7-windows are now supported, inaddition .net45, .net46 and .net47 are not supported anymore</PackageReleaseNotes>
+		<PackageReleaseNotes></PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
