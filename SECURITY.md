@@ -15,6 +15,7 @@ currently being supported with security updates.
 | net5.0-windows   | :white_check_mark: |
 | net6.0-windows   | :white_check_mark: |
 | net7.0-windows   | :white_check_mark: |
+| net8.0-windows   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
