@@ -1,565 +1,449 @@
-﻿namespace WindowsForms.Console;
+﻿using System.Threading.Tasks;
 
-/// <summary>
-/// new Console GUI
-/// </summary>
-public class FConsole : RichTextBox
+namespace WindowsForms.Console
 {
-    private const string _press_any_key_text = " Press Any Key...";
-    private bool _inputEnable;
-    private object _lockInputEnable = new();
-    private object _lockLines = new();
-    private object _lockPause = new();
-    private object _lockReadLine = new();
-    private bool _pause;
-    private QueueTask _writeLineQueue = null;
-    private AutoResetEvent autoResetEventInputEnable = new(false);
-
-    public FConsole()
+    public class FConsole : RichTextBox
     {
-        KeyDown += FConsole_KeyDown;
-        TextChanged += FConsole_TextChanged;
-        LinkClicked += FConsole_LinkClicked;
-        MouseDown += FConsole_MouseDown;
-        MouseMove += FConsole_MouseMove;
-        MouseUp += FConsole_MouseUp;
-        InitializeFConsole();
-        Form.CheckForIllegalCrossThreadCalls = false; //this is important to the async access for multi-threading
-    }
+        private const string _press_any_key_text = " Press Any Key...";
+        private bool _inputEnable;
+        private readonly object _lockInputEnable = new();
+        private readonly object _lockLines = new();
+        private readonly object _lockPause = new();
+        private readonly object _lockReadLine = new();
+        private bool _pause;
+        private QueueTask _writeLineQueue = null;
+        private readonly AutoResetEvent _autoResetEventInputEnable = new(false);
 
-    /// <summary>
-    /// parameters
-    /// </summary>
-    public string[] Arguments { get; set; }
-
-    /// <summary>
-    /// auto scrolling to end when adds newLine (default:true)
-    /// </summary>
-    public bool AutoScrollToEndLine { get; set; }
-
-    public string[] CurrentLines
-    {
-        get
+        public FConsole()
         {
-            lock (_lockLines)
-                return Lines;
+            KeyDown += FConsole_KeyDown;
+            TextChanged += FConsole_TextChanged;
+            LinkClicked += FConsole_LinkClicked;
+            MouseDown += FConsole_MouseDown;
+            MouseMove += FConsole_MouseMove;
+            MouseUp += FConsole_MouseUp;
+            InitializeFConsole();
+            Form.CheckForIllegalCrossThreadCalls = false; // Important for async access with multi-threading
         }
-    }
 
-    /// <summary>
-    /// link color
-    /// </summary>
-    public Color HyperlinkColor { get; set; }
+        public string[] Arguments { get; set; }
 
-    /// <summary>
-    /// stored last used color on console
-    /// </summary>
-    public Color LastUsedColor { get; private set; }
+        public bool AutoScrollToEndLine { get; set; }
 
-    /// <summary>
-    /// after calling readline method sets ReadOnly= true (default:true)
-    /// </summary>
-    public bool SecureReadLine { get; set; }
-
-    /// <summary>
-    /// states of console
-    /// </summary>
-    public ConsoleState State { get; set; }
-
-    /// <summary>
-    /// console title (not necessary :) )
-    /// </summary>
-    public string Title
-    {
-        get
+        public string[] CurrentLines
         {
-            if (Parent != null)
-                return Parent.Text;
-            else
-                return string.Empty;
-        }
-        set
-        {
-            if (Parent != null)
-                Parent.Text = value;
-        }
-    }
-
-    /// <summary>
-    /// catch one char from console
-    /// </summary>
-    private char CurrentKey { get; set; }
-
-    /// <summary>
-    /// catch all chars in line from console
-    /// </summary>
-    private string CurrentLine { get; set; }
-
-    /// <summary>
-    /// read mode checker
-    /// </summary>
-    private bool InputEnable
-    {
-        get
-        {
-            lock (_lockInputEnable)
-                return _inputEnable;
-        }
-        set
-        {
-            lock (_lockInputEnable)
+            get
             {
-                if ((_inputEnable = value))
-                    autoResetEventInputEnable.Reset();
-                else
-                    autoResetEventInputEnable.Set();
+                lock (_lockLines)
+                {
+                    return (string[])Lines.Clone(); // Avoiding external modifications
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// console pause checker
-    /// </summary>
-    private bool Pause
-    {
-        get
+        public Color HyperlinkColor { get; set; }
+
+        public Color LastUsedColor { get; private set; }
+
+        public bool SecureReadLine { get; set; }
+
+        public ConsoleState State { get; set; }
+
+        public string Title
         {
-            lock (_lockPause)
-                return _pause;
+            get => Parent?.Text ?? string.Empty;
+            set
+            {
+                if (Parent != null)
+                {
+                    Parent.Text = value;
+                }
+            }
         }
-        set
+
+        private char CurrentKey { get; set; }
+
+        private string CurrentLine { get; set; }
+
+        private bool InputEnable
         {
-            lock (_lockPause)
-                _pause = value;
+            get
+            {
+                lock (_lockInputEnable)
+                    return _inputEnable;
+            }
+            set
+            {
+                lock (_lockInputEnable)
+                {
+                    _inputEnable = value;
+                    if (_inputEnable)
+                        _autoResetEventInputEnable.Reset();
+                    else
+                        _autoResetEventInputEnable.Set();
+                }
+            }
         }
-    }
 
-    private int ReadPoint { get; set; }
-
-    private int RecentCount { get; set; }
-
-    /// <summary>
-    /// recent list of console
-    /// </summary>
-    private List<string> recentlist { get; set; }
-
-    public new void Clear()
-    {
-        base.Clear();
-        this.recentlist.Clear();
-    }
-
-    public new void Dispose(bool disposing)
-    {
-        try
+        private bool Pause
         {
-            this._writeLineQueue.Dispose();
+            get
+            {
+                lock (_lockPause)
+                    return _pause;
+            }
+            set
+            {
+                lock (_lockPause)
+                    _pause = value;
+            }
         }
-        catch { }
-        try
-        {
-            this.recentlist.Clear();
-        }
-        catch { }
-        try
-        {
-            this.RecentCount = 0;
-            this.recentlist.Clear();
-        }
-        catch { }
-        base.Dispose(disposing);
-        GC.SuppressFinalize(this);
-    }
 
-    public void HistoryJumper()
-    {
-        if (RecentCount >= this.recentlist.Count)
-            RecentCount = this.recentlist.Count - 1;
+        private int ReadPoint { get; set; }
+
+        private int RecentCount { get; set; }
+
+        private List<string> _recentList = new();
+
+        public new void Clear()
+        {
+            base.Clear();
+            _recentList.Clear();
+        }
+
+        public new void Dispose(bool disposing)
+        {
+            try
+            {
+                _writeLineQueue?.Dispose();
+            }
+            catch { }
+            finally
+            {
+                _recentList.Clear();
+                RecentCount = 0;
+            }
+
+            base.Dispose(disposing);
+            GC.SuppressFinalize(this);
+        }
+
+        public void HistoryJumper()
+        {
+#if !NET48
+            RecentCount = Math.Clamp(RecentCount, 0, _recentList.Count - 1);
+#else
+        if (RecentCount >= _recentList.Count)
+            RecentCount = _recentList.Count - 1;
         else if (RecentCount < 0)
             RecentCount = 0;
-    }
-
-    /// <summary>
-    /// Initialize Console
-    /// </summary>
-    public void InitializeFConsole()
-    {
-        Name = "FConsole";
-        Text = Name;
-        Title = Name;
-        Arguments = Array.Empty<string>();
-        BackColor = Color.Black;
-        ForeColor = Color.FromArgb(0xdf, 0xd8, 0xc2);
-        Dock = DockStyle.None;
-        BorderStyle = BorderStyle.None;
-        ReadOnly = true;
-        Font = new("consolas", 10);
-        MinimumSize = new(470, 200);
-        ScrollBars = RichTextBoxScrollBars.Vertical;
-        Pause = false;
-        InputEnable = false;
-
-        if (Parent != null)
-        {
-            ((Form)Parent).WindowState = FormWindowState.Normal;
-            Parent.BackColor = BackColor;
+#endif
         }
 
-        DetectUrls = true;
-        this.recentlist = new();
-        SecureReadLine = true;
-        AutoScrollToEndLine = true;
-        State = ConsoleState.Writing;
-        LastUsedColor = SelectionColor;
-        MaxLength = 32767;
-        this._writeLineQueue = new(this);
-    }
-
-    /// <summary>
-    /// stop line
-    /// </summary>
-    /// <returns>
-    /// </returns>
-    public Task<char> ReadKey(Color? color = null, CancellationToken cancellationToken = default)
-    {
-        if (State == ConsoleState.ReadKey)
+        public void InitializeFConsole()
+        {
+            Name = "FConsole";
+            Text = Name;
+            Title = Name;
+            Arguments = Array.Empty<string>();
+            BackColor = Color.Black;
+            ForeColor = Color.FromArgb(0xdf, 0xd8, 0xc2);
+            Dock = DockStyle.None;
+            BorderStyle = BorderStyle.None;
+            ReadOnly = true;
+            Font = new Font("consolas", 10);
+            MinimumSize = new Size(470, 200);
+            ScrollBars = RichTextBoxScrollBars.Vertical;
+            Pause = false;
             InputEnable = false;
 
-        State = ConsoleState.Writing;
-        Color Color = ForeColor;
+            if (Parent != null)
+            {
+                ((Form)Parent).WindowState = FormWindowState.Normal;
+                Parent.BackColor = BackColor;
+            }
 
-        if (color.HasValue)
-            Color = color.Value;
+            DetectUrls = true;
+            _recentList = new List<string>();
+            SecureReadLine = true;
+            AutoScrollToEndLine = true;
+            State = ConsoleState.Writing;
+            LastUsedColor = SelectionColor;
+            MaxLength = 32767;
+            _writeLineQueue = new QueueTask(this);
+        }
 
-        WriteLine(_press_any_key_text, Color);
-
-        return Task.Run(() =>
+        public Task<char> ReadKey(Color? color = null, CancellationToken cancellationToken = default)
         {
-            var recentReadState = ReadOnly;
-            CurrentKey = ' ';
-            ReadPoint = Text.Length;
-            InputEnable = true;
-            ReadOnly = false;
-            State = ConsoleState.ReadKey;
-            this.autoResetEventInputEnable.WaitOne();
-
-            if (SecureReadLine)
-                ReadOnly = true;
-            else
-                ReadOnly = recentReadState;
+            if (State == ConsoleState.ReadKey)
+                InputEnable = false;
 
             State = ConsoleState.Writing;
+            Color displayColor = color ?? ForeColor;
 
-            return CurrentKey;
-        }, cancellationToken);
-    }
+            WriteLine(_press_any_key_text, displayColor);
 
-    /// <summary>
-    /// read line
-    /// </summary>
-    /// <returns>
-    /// </returns>
-    public Task<string> ReadLine(CancellationToken cancellationToken = default)
-    {
-        return Task.Run(() =>
-        {
-            lock (this._lockReadLine)
+            return Task.Run(() =>
             {
-                var recentReadState = ReadOnly;
-                CurrentLine = string.Empty;
-                ReadPoint = TextLength;
-                InputEnable = true;
-                ReadOnly = false;
-                State = ConsoleState.ReadLine;
-                this.autoResetEventInputEnable.WaitOne();
-                Cursor = Cursors.IBeam;
+                lock (_lockReadLine)
+                {
+                    var recentReadState = ReadOnly;
+                    CurrentKey = ' ';
+                    ReadPoint = Text.Length;
+                    InputEnable = true;
+                    ReadOnly = false;
+                    State = ConsoleState.ReadKey;
 
-                if (SecureReadLine)
-                    ReadOnly = true;
-                else
-                    ReadOnly = recentReadState;
+                    _autoResetEventInputEnable.WaitOne();
 
-                State = ConsoleState.Writing;
+                    ReadOnly = SecureReadLine ? true : recentReadState;
+                    State = ConsoleState.Writing;
 
-                return CurrentLine;
+                    return CurrentKey;
+                }
+            }, cancellationToken);
+        }
+
+        public Task<string> ReadLine(CancellationToken cancellationToken = default)
+        {
+            return Task.Run(() =>
+            {
+                lock (_lockReadLine)
+                {
+                    var recentReadState = ReadOnly;
+                    CurrentLine = string.Empty;
+                    ReadPoint = TextLength;
+                    InputEnable = true;
+                    ReadOnly = false;
+                    State = ConsoleState.ReadLine;
+
+                    _autoResetEventInputEnable.WaitOne();
+                    Cursor = Cursors.IBeam;
+
+                    ReadOnly = SecureReadLine ? true : recentReadState;
+                    State = ConsoleState.Writing;
+
+                    return CurrentLine;
+                }
+            }, cancellationToken);
+        }
+
+        public string RecentRedo()
+        {
+            if (_recentList.Count > 0)
+            {
+                RecentCount++;
+                HistoryJumper();
+
+                return _recentList[RecentCount];
             }
-        }, cancellationToken);
-    }
-
-    public string RecentRedo()
-    {
-        if (recentlist.Count > 0)
-        {
-            RecentCount++;
-            HistoryJumper();
-
-            return this.recentlist[RecentCount];
+            else
+            {
+                return string.Empty;
+            }
         }
-        else
+
+        public string RecentUndo()
         {
-            return string.Empty;
-        }
-    }
+            if (_recentList.Count > 0)
+            {
+                RecentCount--;
+                HistoryJumper();
 
-    public string RecentUndo()
-    {
-        if (recentlist.Count > 0)
+                return _recentList[RecentCount];
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void SelectLastLine()
         {
-            RecentCount--;
-            HistoryJumper();
-
-            return this.recentlist[RecentCount];
+            if (CurrentLines.Length > 0)
+            {
+                var line = CurrentLines.Length - 1;
+                var s1 = GetFirstCharIndexOfCurrentLine();
+                var s2 = line < CurrentLines.Length - 1 ? GetFirstCharIndexFromLine(line + 1) - 1 : Text.Length;
+                Select(s1, s2 - s1);
+            }
         }
-        else
+
+        public void SetText(string message, Color? color = null)
         {
-            return string.Empty;
+            color ??= ForeColor;
+            LastUsedColor = SelectionColor = color.Value;
+            SelectedText = message;
         }
-    }
 
-    /// <summary>
-    /// last line gets
-    /// </summary>
-    public void SelectLastLine()
-    {
-        if (CurrentLines.Any())
+        public void UpdateLine(int line, string message, Color? color = null)
         {
-            var line = CurrentLines.Count() - 1;
-            var s1 = GetFirstCharIndexOfCurrentLine();
-            var s2 = line < CurrentLines.Count() - 1 ? GetFirstCharIndexFromLine(line + 1) - 1 : Text.Length;
-            Select(s1, s2 - s1);
-        }
-    }
-
-    public void SetText(string message, Color? color = null)
-    {
-        if (!color.HasValue)
-            color = ForeColor;
-
-        LastUsedColor = SelectionColor = color.Value;
-        SelectedText = message;
-    }
-
-    /// <summary>
-    /// updates selected line
-    /// </summary>
-    /// <param name="line">
-    /// </param>
-    /// <param name="message">
-    /// </param>
-    /// <param name="color">
-    /// </param>
-    public void UpdateLine(int line, string message, Color? color = null)
-    {
-        ReadOnly = true;
-
-        if (!color.HasValue)
-            color = ForeColor;
-
-        SelectLastLine();
-        SetText(message, color);
-    }
-
-    /// <summary>
-    /// write function
-    /// </summary>
-    /// <param name="message">
-    /// </param>
-    /// <param name="color">
-    /// </param>
-    /// <param name="showTimeTag">
-    /// shows time on output
-    /// </param>
-    public void Write(string message, Color? color = null, bool showTimeTag = false)
-    {
-        this._writeLineQueue.Enqueue(new QueueTaskObject(message, color, showTimeTag));
-    }
-
-    /// <summary>
-    /// writeline function
-    /// </summary>
-    /// <param name="message">
-    /// </param>
-    /// <param name="color">
-    /// </param>
-    public void WriteLine(string message, Color? color = null, bool showTimeTag = false)
-    {
-        Write(message + Environment.NewLine, color, showTimeTag);
-    }
-
-    internal bool OriginalWrite(string message, Color? color = null, bool showTimeTag = false)
-    {
-        if ((message.Length == _press_any_key_text.Length && !_press_any_key_text.Equals(message.Replace(Environment.NewLine, ""))) && State == ConsoleState.ReadKey)
-            return false;
-
-        if (this.IsDisposed)
-            return false;
-
-        var recentReadState = ReadOnly;
-        Select(TextLength, 0);
-
-        if (!message.EndsWith(Environment.NewLine) || State == ConsoleState.ReadLine || State == ConsoleState.ReadKey || message == Environment.NewLine)
-            showTimeTag = false;
-
-        if (showTimeTag)
-            message = $"{DateTime.Now}: {message}";
-
-        SetText(message, color);
-        DeselectAll();
-
-        if (AutoScrollToEndLine)
-            this.ScrollToCaret();
-
-        if (SecureReadLine)
             ReadOnly = true;
-        else
-            ReadOnly = recentReadState;
-
-        return true;
-    }
-
-    /// <summary>
-    /// default console key events
-    /// </summary>
-    /// <param name="sender">
-    /// </param>
-    /// <param name="e">
-    /// </param>
-    private void FConsole_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (State == ConsoleState.Closing)
-        {
-            e.SuppressKeyPress = true;
-            return;
+            color ??= ForeColor;
+            SelectLastLine();
+            SetText(message, color);
         }
 
-        if ((e.KeyCode == Keys.Up || e.KeyCode == Keys.Down) && State == ConsoleState.ReadLine)
+        public void Write(string message, Color? color = null, bool showTimeTag = false)
         {
-            if (this.recentlist.Count != 0)
+            _writeLineQueue.Enqueue(new QueueTaskObject(message, color, showTimeTag));
+        }
+
+        public void WriteLine(string message, Color? color = null, bool showTimeTag = false)
+        {
+            Write(message + Environment.NewLine, color, showTimeTag);
+        }
+
+        internal bool OriginalWrite(string message, Color? color = null, bool showTimeTag = false)
+        {
+            if ((message.Length == _press_any_key_text.Length && !_press_any_key_text.Equals(message.Replace(Environment.NewLine, ""))) && State == ConsoleState.ReadKey)
+                return false;
+
+            if (IsDisposed)
+                return false;
+
+            var recentReadState = ReadOnly;
+            Select(TextLength, 0);
+
+            if (!message.EndsWith(Environment.NewLine) || State == ConsoleState.ReadLine || State == ConsoleState.ReadKey || message == Environment.NewLine)
+                showTimeTag = false;
+
+            if (showTimeTag)
+                message = $"{DateTime.Now}: {message}";
+
+            SetText(message, color);
+            DeselectAll();
+
+            if (AutoScrollToEndLine)
+                ScrollToCaret();
+
+            ReadOnly = SecureReadLine ? true : recentReadState;
+
+            return true;
+        }
+
+        private void FConsole_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (State == ConsoleState.Closing)
             {
-                var recentText = string.Empty;
-
-                if (e.KeyCode == Keys.Up)
-                {
-                    recentText = RecentUndo();
-                }
-                else if (e.KeyCode == Keys.Down)
-                {
-                    recentText = RecentRedo();
-                }
-
-                SelectLastLine();
-                SelectedText = recentText;
+                e.SuppressKeyPress = true;
+                return;
             }
 
-            e.SuppressKeyPress = true;
-            return;
-        }
-        else
-        {
+            if ((e.KeyCode == Keys.Up || e.KeyCode == Keys.Down) && State == ConsoleState.ReadLine)
+            {
+                if (_recentList.Count != 0)
+                {
+                    var recentText = e.KeyCode == Keys.Up ? RecentUndo() : RecentRedo();
+                    SelectLastLine();
+                    SelectedText = recentText;
+                }
+
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             Select(TextLength, 0);
             if (e.KeyData == (Keys.Control | Keys.V))
             {
                 MultiplePaste();
                 e.SuppressKeyPress = true;
             }
-            else if ((int)e.KeyCode == (int)Keys.Enter && InputEnable == true && State == ConsoleState.ReadLine)
+            else if (e.KeyCode == Keys.Enter && InputEnable && State == ConsoleState.ReadLine)
             {
                 Cursor = Cursors.WaitCursor;
                 ReadOnly = true;
-                CurrentLine = CurrentLines[CurrentLines.Count() - 1];
-                recentlist.Add(CurrentLine);
+                CurrentLine = CurrentLines[CurrentLines.Length - 1];
+                _recentList.Add(CurrentLine);
                 WriteLine(string.Empty);
                 InputEnable = false;
                 e.SuppressKeyPress = true;
             }
-            else if (InputEnable == true && State == ConsoleState.ReadKey)
+            else if (InputEnable && State == ConsoleState.ReadKey)
             {
                 ReadOnly = true;
                 CurrentKey = (char)e.KeyCode;
                 InputEnable = false;
             }
-            else if ((int)e.KeyCode == (int)Keys.Escape && InputEnable == false) //esc exit
+            else if (e.KeyCode == Keys.Escape && !InputEnable)
             {
                 Pause = false;
             }
-            else if ((int)e.KeyCode == (int)Keys.Space && InputEnable == false) //space pause
+            else if (e.KeyCode == Keys.Space && !InputEnable)
             {
                 Pause = !Pause;
             }
-            else if ((int)e.KeyCode == (int)Keys.Back && InputEnable == true && ReadPoint + 1 > TextLength)
+            else if (e.KeyCode == Keys.Back && InputEnable && ReadPoint + 1 > TextLength)
             {
                 e.SuppressKeyPress = true;
             }
         }
-    }
 
-    /// <summary>
-    /// link click router
-    /// https://stackoverflow.com/questions/4580263/how-to-open-in-default-browser-in-c-sharp
-    /// </summary>
-    /// <param name="sender">
-    /// </param>
-    /// <param name="e">
-    /// </param>
-    private void FConsole_LinkClicked(object sender, LinkClickedEventArgs e)
-    {
-        // hack because of this: https://github.com/dotnet/corefx/issues/10361
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        private void FConsole_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             try
             {
-                Process.Start(e.LinkText);
+                var url = e.LinkText;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    Process.Start(url);
+                }
             }
             catch
             {
-                Process.Start("explorer", e.LinkText);
+                // Handle or log exceptions
             }
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+
+        private void FConsole_MouseDown(object sender, MouseEventArgs e)
         {
-            Process.Start("xdg-open", e.LinkText);
+            if (e.Button == MouseButtons.Right && InputEnable)
+            {
+                MultiplePaste();
+            }
+            else if (!InputEnable)
+            {
+                Select(Text.Length, 0);
+            }
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+
+        private void FConsole_MouseMove(object sender, MouseEventArgs e)
         {
-            Process.Start("open", e.LinkText);
+            if (!InputEnable)
+            {
+                Select(Text.Length, 0);
+            }
         }
-        else
+
+        private void FConsole_MouseUp(object sender, MouseEventArgs e)
         {
-            Process.Start(e.LinkText);
+            if (!InputEnable)
+            {
+                Select(Text.Length, 0);
+            }
         }
-    }
 
-    private void FConsole_MouseDown(object sender, MouseEventArgs e)
-    {
-        if (e.Button == MouseButtons.Right && InputEnable)
-            MultiplePaste();
-        else if (!InputEnable)
-            Select(Text.Length, 0);
-    }
+        private void FConsole_TextChanged(object sender, EventArgs e)
+        {
+        }
 
-    private void FConsole_MouseMove(object sender, MouseEventArgs e)
-    {
-        if (!InputEnable)
-            Select(Text.Length, 0);
-    }
-
-    private void FConsole_MouseUp(object sender, MouseEventArgs e)
-    {
-        if (!InputEnable)
-            Select(Text.Length, 0);
-    }
-
-    private void FConsole_TextChanged(object sender, EventArgs e)
-    {
-    }
-
-    /// <summary>
-    /// mouse right click event
-    /// </summary>
-    private void MultiplePaste()
-    {
-        ReadOnly = true;
-        CurrentLine = Clipboard.GetText();
-        InputEnable = false;
+        private void MultiplePaste()
+        {
+            ReadOnly = true;
+            CurrentLine = Clipboard.GetText();
+            InputEnable = false;
+        }
     }
 }
