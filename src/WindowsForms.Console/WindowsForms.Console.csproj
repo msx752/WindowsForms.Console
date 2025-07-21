@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net48;netcoreapp3.0;netcoreapp3.1;net5.0-windows;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net48;netcoreapp3.0;netcoreapp3.1;net5.0-windows;net6.0-windows;net7.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
 		<UseWindowsForms>true</UseWindowsForms>
 		<IsPackable>true</IsPackable>
 		<LangVersion>12</LangVersion>
@@ -29,13 +29,13 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<Version>3.0.3-alpha</Version>
-		<AssemblyVersion>3.0.3</AssemblyVersion>
+		<Version>3.0.4</Version>
+		<AssemblyVersion>3.0.4</AssemblyVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<id>WindowsForms.Console</id>
 		<Title>WindowsForms.Console</Title>
-		<Description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application.</Description>
-		<Summary></Summary>
+		<Description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application. Now supports .NET 9.0 and previous versions.</Description>
+		<Summary>WindowsForms.Console component for WinForms applications. Supports .NET Framework 4.8, .NET Core 3.0/3.1, .NET 5.0-9.0 (Windows).</Summary>
 		<Authors>Mustafa Salih ASLIM;</Authors>
 		<PackageProjectUrl>https://github.com/msx752/WindowsForms.Console</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>

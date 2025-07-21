@@ -10,8 +10,8 @@
         <projectUrl>https://github.com/msx752/WindowsForms.Console</projectUrl>
         <iconUrl>https://github.com/msx752/WindowsForms.Console/blob/master/wfc.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application.</description>
-        <releaseNotes />
+        <description>Component of WindowsForms, ConsoleGUI is added to WindowsForms Application. Now supports .NET 9.0 and previous versions.</description>
+        <releaseNotes>Added support for .NET 9.0 (Windows) alongside previous versions.</releaseNotes>
         <copyright>Copyright 2017</copyright>
         <tags>FConsole WindowsForms.Console WinConsole Console Component WinFormConsole</tags>
         <dependencies>

@@ -15,6 +15,7 @@ Below are the .NET versions currently supported with security updates. To ensure
 | net6.0-windows   | :white_check_mark: |
 | net7.0-windows   | :white_check_mark: |
 | net8.0-windows   | :white_check_mark: |
+| net9.0-windows   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 

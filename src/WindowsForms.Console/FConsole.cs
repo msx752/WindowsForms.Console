@@ -1,4 +1,6 @@
-﻿namespace WindowsForms.Console;
+﻿using System.ComponentModel;
+
+namespace WindowsForms.Console;
 
 /// <summary>
 /// Represents a custom console control for Windows Forms.
@@ -21,7 +23,6 @@ public class FConsole : RichTextBox
     public FConsole()
     {
         KeyDown += FConsole_KeyDown;
-        TextChanged += FConsole_TextChanged;
         LinkClicked += FConsole_LinkClicked;
         MouseDown += FConsole_MouseDown;
         MouseMove += FConsole_MouseMove;
@@ -33,11 +34,13 @@ public class FConsole : RichTextBox
     /// <summary>
     /// Gets or sets the arguments passed to the console.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string[] Arguments { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the console should automatically scroll to the end line.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool AutoScrollToEndLine { get; set; }
 
     /// <summary>
@@ -57,6 +60,7 @@ public class FConsole : RichTextBox
     /// <summary>
     /// Gets or sets the color of hyperlinks in the console.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Color HyperlinkColor { get; set; }
 
     /// <summary>
@@ -67,16 +71,19 @@ public class FConsole : RichTextBox
     /// <summary>
     /// Gets or sets a value indicating whether the console should be read-only after calling ReadLine.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool SecureReadLine { get; set; }
 
     /// <summary>
     /// Gets or sets the current state of the console.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ConsoleState State { get; set; }
 
     /// <summary>
     /// Gets or sets the title of the console.
     /// </summary>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string Title
     {
         get => Parent?.Text ?? string.Empty;
@@ -108,6 +115,7 @@ public class FConsole : RichTextBox
             lock (_lockInputEnable)
             {
                 _inputEnable = value;
+
                 if (_inputEnable)
                     _autoResetEventInputEnable.Reset();
                 else
@@ -151,25 +159,26 @@ public class FConsole : RichTextBox
         _recentList.Clear();
     }
 
+    public new void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     /// <summary>
     /// Disposes the FConsole and its resources.
     /// </summary>
     /// <param name="disposing">Indicates whether the method was called from the Dispose method.</param>
     public new void Dispose(bool disposing)
     {
-        try
-        {
-            _writeLineQueue?.Dispose();
-        }
-        catch { }
-        finally
-        {
-            _recentList.Clear();
-            RecentCount = 0;
-        }
+        try { _writeLineQueue?.Dispose(); } catch { }
+
+        try { _autoResetEventInputEnable?.Dispose(); } catch { }
+
+        _recentList.Clear();
+        RecentCount = 0;
 
         base.Dispose(disposing);
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -398,7 +407,7 @@ public class FConsole : RichTextBox
     /// <returns>True if the message was written successfully; otherwise, false.</returns>
     internal bool OriginalWrite(string message, Color? color = null, bool showTimeTag = false)
     {
-        if ((message.Length == _press_any_key_text.Length && !_press_any_key_text.Equals(message.Replace(Environment.NewLine, ""))) && State == ConsoleState.ReadKey)
+        if ((message.Length == _press_any_key_text.Length && !_press_any_key_text.Equals(message.Replace(Environment.NewLine, string.Empty))) && State == ConsoleState.ReadKey)
             return false;
 
         if (IsDisposed)
@@ -446,6 +455,7 @@ public class FConsole : RichTextBox
         }
 
         Select(TextLength, 0);
+
         if (e.KeyData == (Keys.Control | Keys.V))
         {
             MultiplePaste();
@@ -535,10 +545,6 @@ public class FConsole : RichTextBox
         {
             Select(Text.Length, 0);
         }
-    }
-
-    private void FConsole_TextChanged(object sender, EventArgs e)
-    {
     }
 
     /// <summary>
